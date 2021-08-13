@@ -1,3 +1,8 @@
++++
+title = "Cloud storage"
+outputs = ["Reveal"]
++++
+
 Go Course
 Melbourne, May-June 2019
 
@@ -9,24 +14,27 @@ Keilin Olsen
 Ryan O'Kane
 Sai Kiran Gummaraj
 
-* Go Gopher
+---
+## Go Gopher
 
 .image _img/gopher.png
 .caption [[https://blog.golang.org/gopher]]
 
-* Course Overview
+---
+## Course Overview
 
 - Introduction to Go
 - Go programming language
 - Go standard library
-- Go tool chain
+- Go tool chaina
 - Third party Go libraries commonly used
 - JSON and RESTful API
 
 Find Slides at [[https://go-course.org]] ([[https://github.com/anz-bank/go-slides][source]] on GitHub)
 
 
-* Course Completion
+---
+## Course Completion
 
 - Complete the *Go* *Fundamentals* *Course* by finishing 5 lab assignments
 - Complete the *Full* *Go* *Course* by finishing 10 lab assignments
@@ -37,7 +45,8 @@ Find Slides at [[https://go-course.org]] ([[https://github.com/anz-bank/go-slide
 - Receive a printed *certificate* if you complete 5 or 10 labs
 
 
-* Talks
+---
+## Talks
 
 All talks take place at the Charles Goode Auditorium.
 Attendance is optional.
@@ -50,7 +59,8 @@ The last 30 minutes of each talk are reserved for Q&A and help.
 - 13 June 2019, 9-11am:*Toolchain*, *Standard* *Library*, *JSON* and *RESTful* *API*
 
 
-* Prerequisites
+---
+## Prerequisites
 
 - No prior Go knowledge required
 - Some programming experience strongly recommended
@@ -59,11 +69,13 @@ The last 30 minutes of each talk are reserved for Q&A and help.
 - Install [[https://github.com/golangci/golangci-lint#install][golangci-lint]]
 
 
-* Contact
+---
+## Contact
 
 Please join [[https://anzengineering.slack.com/messages/CFCPLHFT2/convo/CFCPLHFT2-1557100844.007600/][#go-course]] on [[https://anzengineering.slack.com]]
 
-*Instructors*
+---
+#Instructors*
 go-instructors@anz.com
 
 [[https://anzengineering.slack.com/team/U5PTX8C1F][@camh]], Cameron.Hutchison@anz.com
@@ -75,10 +87,12 @@ go-instructors@anz.com
 [[https://anzengineering.slack.com/team/UC9C4K2ES][@saikirian]], SaiKiran.Gummaraj@anz.com
 
 
-* History and Overview
+---
+## History and Overview
 
 
-* History of Go
+---
+## History of Go
 
 .image _img/xkcd_compiling.png
 .caption [[https://xkcd.com/303/]]
@@ -89,7 +103,8 @@ go-instructors@anz.com
 2012: Go version 1.0
 
 
-* What is Go?
+---
+## What is Go?
 
 - A simple language that is easy to learn and read
 - Statically typed, but with a dynamic feel
@@ -104,10 +119,11 @@ go-instructors@anz.com
 (Source: [[https://talks.golang.org/2012/zen.slide#2][Go and the Zen of Python]])
 
 
-* What does Go look like?
+---
+## What does Go look like?
 
 Hello world in Go
-
+```go
 	package main
 
 	import (
@@ -117,14 +133,16 @@ Hello world in Go
 	func main() {
 		fmt.Println("Hello, Melbourne ☕️🎸🏈❤️")
 	}
+```
 
 Execute with
+```
+go run hello.go
 
-	language:bash
-	go run hello.go
+```
 
-
-* What is Go NOT?
+---
+## What is Go NOT?
 
 Go favours simplicity and directness resulting in some purposeful omissions:
 
@@ -139,7 +157,8 @@ Go favours simplicity and directness resulting in some purposeful omissions:
 - No arguments about code style :)
 
 
-* Why Go
+---
+## Why Go
 
 - simple: easy to learn and read
 - a single obvious right way to do most things
@@ -151,10 +170,12 @@ Go favours simplicity and directness resulting in some purposeful omissions:
 Here is a great read on Rob Pike's blog about "Why Go" - ([[https://commandcenter.blogspot.com/2012/06/less-is-exponentially-more.html][Less is Exponentially More]])
 
 
-* Demo
+---
+## Demo
 
 
-* Demo
+---
+## Demo
 
 - 2 seconds latency Pingserver
 - Java Spring Boot implementation
@@ -162,8 +183,9 @@ Here is a great read on Rob Pike's blog about "Why Go" - ([[https://commandcente
 - Benchmark
 
 
-* Java Spring Boot Initializr
-
+---
+## Java Spring Boot Initializr
+```
 	── build.gradle
 	├── gradle
 	│   └── wrapper
@@ -188,11 +210,12 @@ Here is a great read on Rob Pike's blog about "Why Go" - ([[https://commandcente
 	          .....
 		                                └── PingserverApplicationTests.java
 
-
-* PingController.java
+```
+---
+## PingController.java
 
 Source on [[https://github.com/anz-bank/go-slides/tree/master/pingserver/java][GitHub]]
-
+```java
 	package com.anz.dcx.serverdemo.controller;
 
 	import org.springframework.http.MediaType;
@@ -210,28 +233,29 @@ Source on [[https://github.com/anz-bank/go-slides/tree/master/pingserver/java][G
 	        return "pong";
 	    }
 	}
-
+```
 Execute with
-
+```
 	./gradlew clean bootRun
+```
 
-
-* Go Implementation
+---
+## Go Implementation
 Source on [[https://github.com/anz-bank/go-slides/tree/master/pingserver/go][GitHub]]
-
+```
 	language:none
 	├── go.mod
 	├── go.sum
 	└── main.go
-
+```
 Execute with
-
-	language:bash
+```
 	go run main.go
+```
 
-
-* Main.go
-
+---
+## Main.go
+```go
 	package main
 
 	import (
@@ -250,16 +274,17 @@ Execute with
 		fmt.Println("Starting webserver on port", addr)
 		log.Fatal(http.ListenAndServe(addr, nil))
 	}
+```
 
-
-* Benchmark
+---
+## Benchmark
 
 - 19,000 concurrent requests
 - Ubuntu 18.04 2.3GHz quad-core Intel Core i7
 - Apache's `ab` command
 
-    ab -n 19000 -c 19000 -s 200 -r localhost:8080/ping  # Java
-    ab -n 19000 -c 19000 -s 200 -r localhost:9090/ping  # go
+    ab -n 19000 -c 19000 -s 200 -r localhost:8080/ping  ## Java
+    ab -n 19000 -c 19000 -s 200 -r localhost:9090/ping  ## go
 
 - Results
 
@@ -271,14 +296,17 @@ Execute with
 
 - Further details on [[https://github.com/anz-bank/go-slides/tree/master/pingserver#benchmark][GitHub]]
 
-* Benchmark
+---
+## Benchmark
 - Range of concurrent requests from 1,000 to 19,000
 .image _img/JavaVsGoLoadTest.png 500 _
 
-* Interlude: Towards Continuous Deployment
+---
+## Interlude: Towards Continuous Deployment
 
 
-* What is Continuous Deployment (CD)?
+---
+## What is Continuous Deployment (CD)?
 
 Continuous Deployment != Continuous Delivery
 
@@ -286,7 +314,8 @@ Continuous Deployment != Continuous Delivery
 .caption [[https://blog.crisp.se/2013/02/05/yassalsundman/continuous-delivery-vs-continuous-deployment][Yassal Sundman, Continuous Delivery vs Continuous Deployment]]
 
 
-* Continuous Deployment Quotes
+---
+## Continuous Deployment Quotes
 
 "Continuous Deployment is a strategy for software releases wherein any code commit that passes the automated testing phase is automatically released into the production environment."
 [[https://searchitoperations.techtarget.com/definition/continuous-deployment][TechTarget definition]]
@@ -296,7 +325,8 @@ Continuous Deployment != Continuous Delivery
 [[https://semaphoreci.com/blog/2017/07/27/what-is-the-difference-between-continuous-integration-continuous-deployment-and-continuous-delivery.html][Marko Anastasov, Semaphore Engineering Blog]]
 
 
-* Recommendations for CD (1/3)
+---
+## Recommendations for CD (1/3)
 
 - Use *trunk* *based* *development* (not GitFlow)
 - Create *small* *PRs* (Pull Requests) that can be Squash Merged
@@ -304,7 +334,8 @@ Continuous Deployment != Continuous Delivery
 - Protect `master` branch on GitHub
 
 
-* Recommendations for CD (2/3)
+---
+## Recommendations for CD (2/3)
 
 Quality leads to the confidence to automatically deploy, so we need
 ways to increase and maintain quality.
@@ -315,7 +346,8 @@ ways to increase and maintain quality.
 - Ensure *100%* *coverage*
 
 
-* Recommendations for CD (3/3)
+---
+## Recommendations for CD (3/3)
 
 - Test (unit & system), lint & cover as part of *CI* (Continuous Integration)
 - *Version* all deployments (use [[https://semver.org/][semver]]; tag source, images etc.)
@@ -323,7 +355,8 @@ ways to increase and maintain quality.
 - Enjoy your CD as last step after successful CI run on master
 
 
-* Protect master branch on GitHub
+---
+## Protect master branch on GitHub
 
 	language:none
 	Settings -> Options:
@@ -339,13 +372,15 @@ ways to increase and maintain quality.
 	[x] Include administrators
 
 
-* Commit messages
+---
+## Commit messages
 
 .image _img/xkcd_git_commit.png
 .caption [[https://xkcd.com/1296/]]
 
 
-* Commit messages - spot the difference
+---
+## Commit messages - spot the difference
 
 [[https://chris.beams.io/posts/git-commit/]]
 
@@ -370,7 +405,8 @@ versus
 	ac8326d Polish mockito usage
 
 
-* Recipe for great commit messages
+---
+## Recipe for great commit messages
 
 [[https://chris.beams.io/posts/git-commit/]]
 
@@ -383,7 +419,8 @@ versus
 - Use the body to explain what and why vs. how
 
 
-* Two git commands for precision work
+---
+## Two git commands for precision work
 
 - Use `git` `rebase` `-i` `COMMIT_HASH` to rework your commits if necessary
 - Use `git` `add` `-p` for two separate concerns addressed in the one file
@@ -392,7 +429,8 @@ Don't be afraid!
 Try it out on a new, throwaway branch.
 
 
-* Rebase interactively
+---
+## Rebase interactively
 
 	language:none
 	git log --oneline
@@ -416,7 +454,8 @@ and update commits in your editor with:
 	drop   58b250e WIP
 
 
-* Rebase a feature branch
+---
+## Rebase a feature branch
 
 Rebase will sequentially take the commits from `feature` and reapply them to `master`:
 
@@ -437,13 +476,14 @@ Use the following commands:
 
 	language:none
 	git checkout master
-	git pull upstream master # or just `git pull` if `master` is set to track `upstream/master`
+	git pull upstream master ## or just `git pull` if `master` is set to track `upstream/master`
 	git checkout feature
 	git rebase master
 	git push -f
 
 
-* Update branch on Github
+---
+## Update branch on Github
 
 For an existing PR you can alternatively click `Update` `branch` on Github.
 This will merge `upstream/master` into `origin/feature`.
@@ -454,7 +494,8 @@ Before adding any commits to `feature` locally run:
 
 
 
-* Pull Request (PR) recommendations (1/2)
+---
+## Pull Request (PR) recommendations (1/2)
 
 - Choose a meaningful *PR* *title*, it will become your Squash Merge message
 - Fill in *PR* *description* and reference an Issue for instance with #6
@@ -463,7 +504,8 @@ Before adding any commits to `feature` locally run:
 - Review the *Checks* tab - all checks must pass
 
 
-* Pull Request (PR) recommendations (2/2)
+---
+## Pull Request (PR) recommendations (2/2)
 
 - Think of the reviewer: your code needs to be reviewable and that should be a prime concern when writing your code, commits and PRs
 - Tag your PR Title with `[WIP]` if adjustments are needed
@@ -472,10 +514,12 @@ Before adding any commits to `feature` locally run:
 - Delete branch once merged, especially when using a single remote (no forks)
 
 
-* Go language fundamentals
+---
+## Go language fundamentals
 
 
-* Tutorials, references and tools
+---
+## Tutorials, references and tools
 
 - [[https://tour.golang.org/][Tour of Go]]
 - [[https://gobyexample.com/][Go by example]]
@@ -486,7 +530,8 @@ Before adding any commits to `feature` locally run:
 - [[https://stackoverflow.com/questions/tagged/go?sort=votes&pageSize=100][Stackoverflow]]
 
 
-* Getting started
+---
+## Getting started
 
 - [[https://goplay.space/#cz9VBPWuHS3][Packages]], imports and exported names
 - [[https://goplay.space/#FJKCetXBe2c][Functions]]
@@ -496,7 +541,8 @@ Keep your exported identifiers to as few as possible
 Document them
 
 
-* Basic types
+---
+## Basic types
 
 	bool
 
@@ -515,7 +561,8 @@ Document them
 	complex64 complex128
 
 
-* Zero values
+---
+## Zero values
 
 	language:none
 	0      for numeric types
@@ -524,7 +571,8 @@ Document them
 	nil    for pointers
 
 
-* Values and control flow
+---
+## Values and control flow
 
 - [[https://goplay.space/#TOqGA-5RjUi][Values]]
 - [[https://goplay.space/#ouELtOl07G0][Variables]]
@@ -535,15 +583,18 @@ Document them
 - [[https://goplay.space/#GpoaMY8dboJ][Switch]]
 
 
-* Lab setup
+---
+## Lab setup
 
-* Prerequisites
+---
+## Prerequisites
 
 - Install [[https://git-scm.com/downloads][git]]
 - Install [[https://golang.org/doc/install][go 1.12]]
 - Install [[https://github.com/golangci/golangci-lint#install][golangci-lint]]
 
-* Repository setup
+---
+## Repository setup
 
 - Login to github.com
 - Click `Fork` in the top right corner of [[https://github.com/anz-bank/go-course]]
@@ -562,19 +613,21 @@ Document them
 	git pull
 
 
-* PR from own fork - typical git workflow
+---
+## PR from own fork - typical git workflow
 
 Start work on a new branch `lab1` with:
 
 	git checkout master
-	git pull upstream master  # with upstream/master tracking just use `git pull`
+	git pull upstream master  ## with upstream/master tracking just use `git pull`
 	git checkout -b lab1
 
 Write, test and commit code code, then:
 
 	git push -u origin
 
-* Creating PRs
+---
+## Creating PRs
 
 -  from `feature` branch of your own fork (remote `origin`)
 -  to `master` on [[https://github.com/anz-bank/go-course][anz-bank/go-course]] (remote `upstream`)
@@ -583,22 +636,25 @@ Follow the [[https://github.com/anz-bank/go-course#pre-pr-checklist][PR checklis
 
 When ready, submit and add the `Ready` `for` `review` tag
 
-* Update feature branch
+---
+## Update feature branch
 
 If `master` has advanced after `feature` branch and PR creation you have two options:
 
-*Rebase* *feature* *branch*
+---
+#Rebase* *feature* *branch*
 
 	language:none
 	git checkout master
-	git pull upstream master # or just `git pull` if `master` is set to track `upstream/master`
+	git pull upstream master ## or just `git pull` if `master` is set to track `upstream/master`
 	git checkout feature
 	git rebase master
 	git push -f
 
 or
 
-*Update* *branch* *on* *GitHub*
+---
+#Update* *branch* *on* *GitHub*
 
 For an existing PR you can alternatively click `Update` `branch` on Github.
 This will merge `upstream/master` into `origin/feature`.
@@ -607,7 +663,8 @@ Before adding any commits to `feature` locally run:
 	language:bash
 	git pull origin feature
 
-* Lab PR approval flow - Programmer
+---
+## Lab PR approval flow - Programmer
 
 - Label with the appropriate lab tag (eg: `lab1`)
 - When ready, label with `Ready` `for` `review`
@@ -615,13 +672,15 @@ Before adding any commits to `feature` locally run:
 - If approved by colleague, wait for a CODEOWNER to approve and label with `Merge` `me`
 - Merge
 
-* Lab PR approval flow - Reviewer
+---
+## Lab PR approval flow - Reviewer
 
 - Remove `Ready` `for` `review` and add `Under` `review`
 - Label with either `Approved` `by` `colleague` or `Changes` `requested` and remove `Under` `review`
 
 
-* Test samples
+---
+## Test samples
 
 - [[https://goplay.space/#HcgMVMtjWJo][Basics]]
 - [[https://goplay.space/#Zy2ta-z8vrO][Multiple cases]]
@@ -631,7 +690,8 @@ Before adding any commits to `feature` locally run:
 [[https://dave.cheney.net/2019/05/07/prefer-table-driven-tests][Dave Cheney - table driven tests]]
 
 
-* Lab 1 - Fibonacci
+---
+## Lab 1 - Fibonacci
 
 - Create an executable go program in directory `01_fib/USERNAME`
 - Write a function that prints the first n Fibonacci numbers
@@ -650,7 +710,8 @@ Before adding any commits to `feature` locally run:
 
 - Bonus points: For negative n print [[https://en.wikipedia.org/wiki/Fibonacci_number#Negafibonacci][Negafibonacci numbers]].
 
-* Iterable data types and Range
+---
+## Iterable data types and Range
 
 - [[https://goplay.space/#XrEt6YEl7QC][Arrays]]
 - [[https://goplay.space/#_KaPpZeRNPA][Slices]]
@@ -658,7 +719,8 @@ Before adding any commits to `feature` locally run:
 - [[https://goplay.space/#FezVQTvmsqg][Range]]
 
 
-* Lab 2 - Bubble sort
+---
+## Lab 2 - Bubble sort
 
 - Create an executable go program in directory `02_bubble/USERNAME`
 - Write a function that returns a sorted copy of `int` slice `s` using [[https://en.wikipedia.org/wiki/Bubble_sort][Bubble sort]]:
@@ -673,7 +735,8 @@ Before adding any commits to `feature` locally run:
 - Extra bonus points: implement an _O(n_ _log(n))_ sorting algorithm
 
 
-* Lab 3 - Letter frequency
+---
+## Lab 3 - Letter frequency
 
 - Create an executable go program in directory `03_letters/USERNAME`
 - Write a function that returns a mapping of each letter to its frequency:
@@ -692,14 +755,16 @@ Before adding any commits to `feature` locally run:
 - Bonus points: comprehensive tests
 
 
-* Functions
+---
+## Functions
 
 - [[https://goplay.space/#gHOzTi05LkI][Functions]]: parameters and return values
 - [[https://goplay.space/#-G75RWA1DW1][Variadic Functions]]
 - [[https://goplay.space/#olrpJoSte3n][Closures]]
 
 
-* Lab 4 - Numeronym
+---
+## Lab 4 - Numeronym
 
 - Create an executable go program in directory `04_numeronym/USERNAME`
 - Write a function that returns a slice of numeronyms for its input strings:
@@ -711,7 +776,8 @@ Before adding any commits to `feature` locally run:
 	[a11y K8s abc]
 
 
-* Data structures and interfaces
+---
+## Data structures and interfaces
 
 - [[https://goplay.space/#MYeoiSdP4tp][Pointers]]
 - [[https://goplay.space/#eoBLEu8lRvl][Structs]]
@@ -721,7 +787,8 @@ Before adding any commits to `feature` locally run:
 "The bigger the interface, the weaker the abstraction." - [[https://go-proverbs.github.io/][Rob Pike]]
 
 
-* Embedding - Interfaces
+---
+## Embedding - Interfaces
 
 "Go does not provide the typical, type-driven notion of subclassing, but it does have the ability to “borrow” pieces of an implementation by embedding types within a struct or interface." - [[https://golang.org/doc/effective_go.html#embedding][Effective Go]]
 
@@ -741,14 +808,16 @@ Before adding any commits to `feature` locally run:
 	}
 
 
-* Embedding - Structs
+---
+## Embedding - Structs
 
 "When we embed a type, the methods of that type become methods of the outer type, but when they are invoked the receiver of the method is the inner type, not the outer one." - [[https://golang.org/doc/effective_go.html#embedding][Effective Go]]
 
 - The same applies for all fields within an embedded type
 
 
-* Precedence when Embedding
+---
+## Precedence when Embedding
 
 Embedding types introduces the possiblity for naming conflicts. Go follows some simple rules to help resolve this:
 
@@ -756,14 +825,16 @@ Embedding types introduces the possiblity for naming conflicts. Go follows some 
 - If a field or method appears at the same nesting level, it will return an error
 
 
-* Examples
+---
+## Examples
 
 - [[https://goplay.space/#lAl70x0QACE][Embedded Structs]]
 - [[https://goplay.space/#vLgi3SMtLZp][Embedded Interfaces]]
 - [[https://goplay.space/#cmWFJ26jm2E][Precedence]]
 
 
-* Lab 5 - Stringer
+---
+## Lab 5 - Stringer
 
 - Create an executable go program in directory `05_stringer/USERNAME`
 - Make the `IPAddr` type implement `fmt.Stringer` to print the address as a dotted quad
@@ -773,7 +844,8 @@ Embedding types introduces the possiblity for naming conflicts. Go follows some 
 	127.0.0.1
 
 
-* Go for Java devs
+---
+## Go for Java devs
 
 - [[https://goplay.space/#lQNE-kuVf-N][Functions are lambdas]]
 - [[https://goplay.space/#HVSd6qpj74R][Typed constants are enums]]
@@ -786,7 +858,8 @@ Embedding types introduces the possiblity for naming conflicts. Go follows some 
 - [[https://goplay.space/#UF61v58dVYT][Pointers will also save your day]]
 
 
-* Go for Java devs
+---
+## Go for Java devs
 
 - Not everything is object oriented. Pure functions are just fine
 - Don't worry about abstraction up front, it is easy to abstract in go
@@ -800,7 +873,8 @@ Embedding types introduces the possiblity for naming conflicts. Go follows some 
 - Don't panic
 
 
-* Test two implementations of interface in suite (1/2)
+---
+## Test two implementations of interface in suite (1/2)
 
 	// scaler.go
 	type scaler interface {
@@ -825,7 +899,8 @@ Embedding types introduces the possiblity for naming conflicts. Go follows some 
 	}
 
 
-* Test two implementations of interface in suite (2/2)
+---
+## Test two implementations of interface in suite (2/2)
 
 	type scalerSuite struct {
 		suite.Suite
@@ -853,7 +928,8 @@ Embedding types introduces the possiblity for naming conflicts. Go follows some 
 	}
 
 
-* Lab 6 - CRUD puppy with interface
+---
+## Lab 6 - CRUD puppy with interface
 
 - Create an executable go program in directory `06_puppy/USERNAME` (see [[https://github.com/anz-bank/go-samplerest/blob/master/pkg/pet/types.go][hints]])
 - Implement a `Puppy` struct containing `ID`, `Breed`, `Colour`, `Value`.
@@ -866,17 +942,22 @@ Embedding types introduces the possiblity for naming conflicts. Go follows some 
 .image _img/crud_puppy.jpg
 .caption J. D. Frazer "Illiad", User Friendly - [[https://en.wikipedia.org/wiki/User_Friendly#Crud_Puppy][Crud Puppy]]
 
-* Error Handling in Go
+---
+## Error Handling in Go
 
-* Errors in Go
+---
+## Errors in Go
 
 - `error` is a builtin interface ([[https://golang.org/src/builtin/builtin.go?s=11246:11286#L251][source: error]])
+```
 	type error interface {
 		Error() string
 	}
+```
 - Check errors explicitly
 
-* Errors in Go (1/2)
+---
+## Errors in Go (1/2)
 
 - Create error values using [[https://golang.org/src/errors/errors.go?s=293:320#L1][`errors.New()`]]:
     var ErrPermission = errors.New("permission denied")
@@ -884,7 +965,8 @@ Embedding types introduces the possiblity for naming conflicts. Go follows some 
     return fmt.Errorf("archive/tar: missed writing %d bytes", nb)
 - Exported error variables start with 'Err' (like ErrTimeout, ErrNotFound)
 
-* Errors in Go (2/2)
+---
+## Errors in Go (2/2)
 
 - Create custom error types ([[https://golang.org/pkg/net/#AddrError][source: AddrError]]):
 	type AddrError struct {
@@ -904,7 +986,8 @@ Embedding types introduces the possiblity for naming conflicts. Go follows some 
 - Error values can be logged and printed:
     log.Println(err)
 
-* Error Handling
+---
+## Error Handling
 
 - [[https://goplay.space/#X0qqmcrO6om][Check for error]]
 - [[https://goplay.space/#HiLw8Y_D_6T][Compare error values]]
@@ -914,7 +997,8 @@ Embedding types introduces the possiblity for naming conflicts. Go follows some 
 
 "Errors are values."  - [[https://blog.golang.org/errors-are-values][Rob Pike]]
 
-* Defer
+---
+## Defer
 
 - `defer` delays the execution of a function until the surrounding function returns
 - When `defer` is called the parameters to the call are evaluated and saved
@@ -924,7 +1008,8 @@ Embedding types introduces the possiblity for naming conflicts. Go follows some 
 - Deferred functions are called [[https://goplay.space/#ZX5S9xyOS57][in reverse order]]
 - Most commonly used for [[https://goplay.space/#mh9MhO9rDXt][resource cleanup]] (close IO resources, release locks etc.)
 
-* Panic and Recover (1/2)
+---
+## Panic and Recover (1/2)
 
 - `panic` and `recover` are builtin functions
 - `panic` and `recover` behave similar to `throw/catch` in other languages
@@ -934,7 +1019,8 @@ Embedding types introduces the possiblity for naming conflicts. Go follows some 
 - `recover` (see next slide) can intercept this unwinding
 - Without `recover`, the program is terminated and the error condition is reported
 
-* Panic and Recover (2/2)
+---
+## Panic and Recover (2/2)
 
 - `recover`:
 	func recover() interface{}
@@ -942,7 +1028,8 @@ Embedding types introduces the possiblity for naming conflicts. Go follows some 
 - Must be called from within a deferred function in the same goroutine
 - Returns the value passed by call to panic
 
-* Don't Panic
+---
+## Don't Panic
 
 - Panic could terminate the goroutine or the program
 - Use `panic` rarely and judiciously in your own code
@@ -953,7 +1040,8 @@ Embedding types introduces the possiblity for naming conflicts. Go follows some 
 - [[https://goplay.space/#c8XO7QBMfA5][Basic illustration of panic and recover]]
 - [[https://goplay.space/#V5ckmhsPUHv][Recover and return value]]
 
-* Lab 7 - Errors
+---
+## Lab 7 - Errors
 
 - Create an executable go program in directory `07_errors/USERNAME`
 - Copy the CRUD puppy from upstream master `06_puppy/USERNAME`
@@ -968,9 +1056,11 @@ Embedding types introduces the possiblity for naming conflicts. Go follows some 
 - Add locking for proper use of sync.Map
 - Bonus points: Add a third `Storer` implementation using [[https://github.com/syndtr/goleveldb][LevelDB]]
 
-* Go Concurrency
+---
+## Go Concurrency
 
-* Topics
+---
+## Topics
 
 - Concurrency
 - Concurrency in Go
@@ -980,7 +1070,8 @@ Embedding types introduces the possiblity for naming conflicts. Go follows some 
 - Under the hood: Processes, Threads, Goroutines
 - Under the hood: Go Runtime
 
-* Concurrency
+---
+## Concurrency
 
 Definition
 
@@ -993,7 +1084,8 @@ Definition
 - "Concurrency is not parallelism."
 - "Concurrency is about structure, parallelism is about execution."
 
-* Concurrency in Go
+---
+## Concurrency in Go
 
 Go provides:
 
@@ -1001,7 +1093,8 @@ Go provides:
 - Synchronisation and message passing (channels)
 - Multi-way concurrent control (select)
 
-* Goroutines
+---
+## Goroutines
 
 - Goroutine is an extremely lightweight thread of execution
 - Low initial stack size (2 Kb) that grows
@@ -1009,7 +1102,8 @@ Go provides:
 - Start a goroutine [[https://play.golang.org/p/Xp-QlM1nTGC][using the 'go' statement]]
 	go <function-call>
 
-* Channels
+---
+## Channels
 
 - Communication mechanism (conduit) that lets goroutines exchange data
 - Each channel allows goroutines to send/receive a particular data type (called element type)
@@ -1020,7 +1114,8 @@ Go provides:
 	ch := make(chan int, 10) // ch is a buffered channel of size 10 and type `int`
 - Close channel using `close()` function
 
-* Channel Operations (1/2)
+---
+## Channel Operations (1/2)
 
 - Send and Receive values with the channel operator <-
 
@@ -1037,7 +1132,8 @@ Go provides:
 - Sending message on a closed/nil channel causes the program to panic
 - Receive on a closed channel never blocks
 
-* Channel Operations (2/2)
+---
+## Channel Operations (2/2)
 
 - Range on a channel
 
@@ -1047,7 +1143,8 @@ Go provides:
 
 - Range over a channel that never closes never finishes
 
-* select Statement
+---
+## select Statement
 
 - Allows composing of channels
 - Chooses which set of possible "send" or "receive" operations will proceed
@@ -1066,7 +1163,8 @@ Go provides:
             fmt.Println("no communication")
     }
 
-* Under the hood: Process, Threads and OS Scheduling
+---
+## Under the hood: Process, Threads and OS Scheduling
 
 .image _img/process.png
 .caption [[https://randu.org/tutorials/threads/]]
@@ -1074,7 +1172,8 @@ Go provides:
 - Large (default 2 Mb on Linux) stack size
 - 1x1 mapping between user and kernel threads
 
-* Under the hood: Go Runtime
+---
+## Under the hood: Go Runtime
 
 - Scheduling, Memory Management, Garbage Collection
 - Scheduler tracks goroutines and schedules them to run on a set of OS threads
@@ -1083,16 +1182,19 @@ Go provides:
 .image _img/go_runtime.png
 .caption [[http://www1.cs.columbia.edu/~aho/cs6998/reports/12-12-11_DeshpandeSponslerWeiss_GO.pdf][Analysis of the Go runtime scheduler]]
 
-* Channel Examples
+---
+## Channel Examples
 
 - [[https://play.golang.org/p/dIQTgdZ2kvQ][Send and receive on an unbuffered channel]]
 - [[https://play.golang.org/p/DVkhMmqfs_x][Send and receive on a buffered channel]]
 - [[https://play.golang.org/p/840nqny9Y4D][Receive from a channel using 'range']]
 - [[https://play.golang.org/p/BQtEdOoAjoZ][Timeout with 'select']]
 
-* Tools and Conventions
+---
+## Tools and Conventions
 
-* Project layout
+---
+## Project layout
 
 For non-trivial size projects follow the layout suggested by [[https://github.com/golang-standards/project-layout][golang-standards]]
 Abridged version:
@@ -1119,7 +1221,8 @@ Abridged version:
 	└── vendor
 
 
-* Lab 8 - Project Layout
+---
+## Lab 8 - Project Layout
 
 - Copy the CRUD puppy from upstream master `07_errors/USERNAME`
 - Create directory `08_project/USERNAME` containing
@@ -1143,7 +1246,8 @@ Abridged version:
 
 
 
-* Go tool chain
+---
+## Go tool chain
 
 	language:bash
 	go help
@@ -1158,7 +1262,8 @@ Abridged version:
 	go test -coverprofile=coverage.out ./... && go tool cover -html=coverage.out
 
 
-* Other tools
+---
+## Other tools
 
 Lint with
 
@@ -1169,7 +1274,8 @@ and configure the linter in `.golangci.yml`
 Use `gofmt` or `goimport` as part of your editor/IDE setup
 
 
-* Go standard library
+---
+## Go standard library
 
 [[https://golang.org/pkg/]]
 - fmt
@@ -1186,7 +1292,8 @@ Use `gofmt` or `goimport` as part of your editor/IDE setup
 - ...
 
 
-* JSON - (De-)Serialisation
+---
+## JSON - (De-)Serialisation
 
 - `Marshal` converts a value into a JSON byte array
 - `Unmarshal` converts a JSON-encoded byte array into a value
@@ -1198,7 +1305,8 @@ Use `gofmt` or `goimport` as part of your editor/IDE setup
 	func Unmarshal(data []byte, v interface{}) error { /* ... */ }
 
 
-* JSON - Field Tags
+---
+## JSON - Field Tags
 
 - Attach a 'json' field tag to customise (un)marshalling
 - Common error is making Go fields private (lower case) which results in the fields not being (un)marshalled
@@ -1211,20 +1319,23 @@ Use `gofmt` or `goimport` as part of your editor/IDE setup
 	}
 
 
-* JSON - Zero Values
+---
+## JSON - Zero Values
 
 - All Go struct fields will be set to their type's zero value if the corresponding JSON property is missing.
 - Pointer types have a zero value of `nil`
 - To be able to differentiate between a field which has been set explicitly to it's zero value or omitted, you must use pointer types
 
 
-* Examples
+---
+## Examples
 
 - [[https://goplay.space/#lYdq4Jg19EP][JSON Marshal / Unmarshal]]
 - [[https://goplay.space/#KkPDLf_PvQP][JSON Zero Values]]
 
 
-* Lab 9 - JSON puppy
+---
+## Lab 9 - JSON puppy
 
 - Create directory `09_json/USERNAME` containing a copy of upstream master `08_project/USERNAME`
 - Add JSON tags to puppy data type
@@ -1232,7 +1343,8 @@ Use `gofmt` or `goimport` as part of your editor/IDE setup
 - Add command line flag `-d` `FILE` with long form `--data` `FILE` using [[https://godoc.org/gopkg.in/alecthomas/kingpin.v2][kingpin.v2]]. FILE should contain an array of puppies in JSON format. Parse this file and store its contents.
 
 
-* Useful third party packages
+---
+## Useful third party packages
 
 [[https://godoc.org/github.com/stretchr/testify][testify]] - testing toolkit
 [[https://godoc.org/github.com/go-chi/chi][chi]] - lightweight router for Go HTTP services
@@ -1249,7 +1361,8 @@ Use `gofmt` or `goimport` as part of your editor/IDE setup
  ...
 
 
-* A RESTful API starter (1/3)
+---
+## A RESTful API starter (1/3)
 
 Full sample code on Go Play Space -
 not executable to due 3rd party dependency `chi`:
@@ -1274,7 +1387,8 @@ not executable to due 3rd party dependency `chi`:
 	}
 
 
-* A RESTful API starter (2/3)
+---
+## A RESTful API starter (2/3)
 
 	type Teapot struct {
 		ID          int
@@ -1293,7 +1407,8 @@ not executable to due 3rd party dependency `chi`:
 	}
 
 
-* A RESTful API starter (3/3)
+---
+## A RESTful API starter (3/3)
 
 	// MapTeapotHandler implements  TeapotHandler
 	func (mt *MapTeapotHandler) handleGet(w http.ResponseWriter, r *http.Request) {
@@ -1312,7 +1427,8 @@ not executable to due 3rd party dependency `chi`:
 	}
 
 
-* Lab 10 - Puppy REST
+---
+## Lab 10 - Puppy REST
 
 - Create directory `10_rest/USERNAME` containing a copy of upstream master `09_json/USERNAME`
 - Add file `pkg/puppy/rest.go` implementing:
@@ -1331,7 +1447,8 @@ not executable to due 3rd party dependency `chi`:
 - Document the API in README.md
 
 
-* Lab 11 - Puppy Notifications
+---
+## Lab 11 - Puppy Notifications
 
 - Create directory `11_notify/USERNAME` containing a copy of upstream master `10_rest/USERNAME`
 - Create `cmd/lostpuppy-service/main.go` running single endpoint:
@@ -1346,12 +1463,14 @@ not executable to due 3rd party dependency `chi`:
 - Update Puppy `Delete` method to notify lostpuppy-service in a goroutine and log response code asynchronously.
 
 
-* Further project work
+---
+## Further project work
 
 - [[https://github.com/anz-bank/go-samplerest]]
 - [[https://github.com/anz-bank/decimal]]
 
-* Future of Go
+---
+## Future of Go
 
 - Goal to fix the most significant ways Go 1 fails to scale.
 - Based on [[https://github.com/golang/go/wiki/ExperienceReports][Experience Reports]] 3 pain points were identified
@@ -1363,7 +1482,8 @@ Rob Pike's Talk ([[https://blog.golang.org/toward-go2][Towards Go 2]])
 Dave Cheney Blog ([[https://dave.cheney.net/paste/the-past-present-and-future-of-go2.pdf][Past Present and Future of Go]])
 
 
-* Further Reading
+---
+## Further Reading
 
 - [[https://blog.golang.org/using-go-modules][Package management with go modules]]
 - [[https://appliedgo.net/plugins/][Writing plugins in go]]
@@ -1372,7 +1492,8 @@ Dave Cheney Blog ([[https://dave.cheney.net/paste/the-past-present-and-future-of
 - [[https://golang.org/pkg/runtime/pprof/][CPU/Memory Profiling]]
 
 
-* References
+---
+## References
 
 - [[https://golang.org/doc/faq]]
 - [[https://en.wikipedia.org/wiki/Go_(programming_language)][Wikipedia]]
@@ -1381,7 +1502,8 @@ Dave Cheney Blog ([[https://dave.cheney.net/paste/the-past-present-and-future-of
 - [[https://www.youtube.com/watch?v=ytEkHepK08c][Talk: A Tour of Go]]
 
 
-* Feedback
+---
+## Feedback
 
 Please take a moment to give anonymous feedback at [[http://bit.ly/gc-f6k]].
 
