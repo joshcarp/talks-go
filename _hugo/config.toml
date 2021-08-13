@@ -1,4 +1,4 @@
-baseURL = "https://joshcarp.com/talks-go"
+baseURL = "pages.github.service.anz/carpeggj/talks-go/"
 languageCode = "en-us"
 title = "My New Hugo Site"
 
