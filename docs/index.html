@@ -1,0 +1,1432 @@
+<!doctype html>
+<html lang="en">
+  <head>
+	<meta name="generator" content="Hugo 0.76.5" />
+    <meta charset="utf-8">
+<title>Cloud storage</title>
+
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="/talks-go/reveal-js/css/reset.css">
+<link rel="stylesheet" href="/talks-go/reveal-js/css/reveal.css"><link rel="stylesheet" href="/talks-go/reveal-js/css/theme/black.css" id="theme">
+<link rel="stylesheet" href="/talks-go/highlight-js/default.min.css">
+    
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+  
+
+    <section><p>Go Course
+Melbourne, May-June 2019</p>
+<p>Cameron Hutchison
+Daniel Cantos
+Joshua Carpeggiani
+Julia Ogris
+Keilin Olsen
+Ryan O&rsquo;Kane
+Sai Kiran Gummaraj</p>
+</section><section>
+<h2 id="go-gopher">Go Gopher</h2>
+<p><img src="_img/gopher.png" alt="">.caption [[https://blog.golang.org/gopher]]</p>
+</section><section>
+<h2 id="course-overview">Course Overview</h2>
+<ul>
+<li>Introduction to Go</li>
+<li>Go programming language</li>
+<li>Go standard library</li>
+<li>Go tool chaina</li>
+<li>Third party Go libraries commonly used</li>
+<li>JSON and RESTful API</li>
+</ul>
+<p>Find Slides at <a href="https://go-course.org">source</a> <a href="https://github.com/anz-bank/go-slides">anz-bank/go-slides</a> on GitHub)</p>
+</section><section>
+<h2 id="course-completion">Course Completion</h2>
+<ul>
+<li>Complete the <em>Go</em> <em>Fundamentals</em> <em>Course</em> by finishing 5 lab assignments</li>
+<li>Complete the <em>Full</em> <em>Go</em> <em>Course</em> by finishing 10 lab assignments</li>
+<li>Complete the first lab assignments as described in these <em>slides</em></li>
+<li><em>Merge</em> your approved Pull Request (PR) to complete a lab assignment</li>
+<li><em>Review</em> a colleague&rsquo;s PR and add a link to the review in your own PR description</li>
+<li>Submit your last PR before <em>15/7/2019</em> for a final re-review deadline on <em>31/7/2019</em></li>
+<li>Receive a printed <em>certificate</em> if you complete 5 or 10 labs</li>
+</ul>
+</section><section>
+<h2 id="talks">Talks</h2>
+<p>All talks take place at the Charles Goode Auditorium.
+Attendance is optional.
+The last 30 minutes of each talk are reserved for Q&amp;A and help.</p>
+<ul>
+<li>27 May 2019, 2-5pm: <em>Introduction</em> and <em>Lab</em> <em>Overview</em></li>
+<li>29 May 2019, 9-11am: <em>Values</em>, <em>Control</em> <em>Flow</em>, <em>Iterable</em> <em>Data</em> <em>Types</em> and <em>Range</em></li>
+<li>31 May 2019, 9-11am: <em>Functions</em>, <em>Data</em> <em>Structures</em> and <em>Interfaces</em></li>
+<li>7 June 2019, 9-11am: <em>Errors</em>, <em>Concurrency</em> and <em>Project</em> <em>Layout</em></li>
+<li>13 June 2019, 9-11am:<em>Toolchain</em>, <em>Standard</em> <em>Library</em>, <em>JSON</em> and <em>RESTful</em> <em>API</em></li>
+</ul>
+</section><section>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>No prior Go knowledge required</li>
+<li>Some programming experience strongly recommended</li>
+<li>Basic understanding of <em>JSON</em> and <em>RESTful</em> <em>APIs</em> recommended</li>
+<li>Install <a href="https://golang.org/doc/install">go 1.12</a></li>
+<li>Install <a href="https://github.com/golangci/golangci-lint#install">golangci-lint</a></li>
+</ul>
+</section><section>
+<h2 id="contact">Contact</h2>
+<p>Please join <a href="https://anzengineering.slack.com/messages/CFCPLHFT2/convo/CFCPLHFT2-1557100844.007600/">#go-course</a> on [[https://anzengineering.slack.com]]</p>
+</section><section>
+<h2 id="instructors">Instructors</h2>
+<p><a href="mailto:go-instructors@anz.com">go-instructors@anz.com</a></p>
+<p><a href="https://anzengineering.slack.com/team/U5PTX8C1F">@camh</a>, <a href="mailto:Cameron.Hutchison@anz.com">Cameron.Hutchison@anz.com</a>
+<a href="https://anzengineering.slack.com/team/UCUUKEWGZ">@Dan</a>, <a href="mailto:Daniel.Cantos@anz.com">Daniel.Cantos@anz.com</a>
+<a href="https://anzengineering.slack.com/team/UJC0EUZ3P">@joshcarp</a>, <a href="mailto:Joshua.Carpeggiani@anz.com">Joshua.Carpeggiani@anz.com</a>
+<a href="https://anzengineering.slack.com/team/U84CTGB0F">@julia</a>, <a href="mailto:Julia.Ogris@anz.com">Julia.Ogris@anz.com</a>
+<a href="https://anzengineering.slack.com/team/U8QFMQUJE">@keilin</a>, <a href="mailto:Keilin.Olsen@anz.com">Keilin.Olsen@anz.com</a>
+<a href="https://anzengineering.slack.com/team/U7M6DMFMY">@ryanokane</a>, <a href="mailto:Ryan.O'Kane@anz.com">Ryan.O'Kane@anz.com</a>
+<a href="https://anzengineering.slack.com/team/UC9C4K2ES">@saikirian</a>, <a href="mailto:SaiKiran.Gummaraj@anz.com">SaiKiran.Gummaraj@anz.com</a></p>
+</section><section>
+<h2 id="history-and-overview">History and Overview</h2>
+</section><section>
+<h2 id="history-of-go">History of Go</h2>
+<p><img src="_img/xkcd_compiling.png" alt="">.caption [[https://xkcd.com/303/]]</p>
+<p>2007: Robert Griesemer, Rob Pike, and Ken Thompson start working on Go at Google
+2008: Russ Cox (go mod) and Ian Taylor (gcc frontend) join
+2009: Go goes Open Source
+2012: Go version 1.0</p>
+</section><section>
+<h2 id="what-is-go">What is Go?</h2>
+<ul>
+<li>A simple language that is easy to learn and read</li>
+<li>Statically typed, but with a dynamic feel</li>
+<li>Compiled to native machine code, but has a fast development cycle</li>
+<li>Language-level concurrency features</li>
+<li>Comprehensive and clear standard library</li>
+<li>Garbage collected</li>
+<li>Unicode support</li>
+<li>Great tools</li>
+<li>Open source</li>
+</ul>
+<p>(Source: <a href="https://talks.golang.org/2012/zen.slide#2">Go and the Zen of Python</a>)</p>
+</section><section>
+<h2 id="what-does-go-look-like">What does Go look like?</h2>
+<p>Hello world in Go</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="nohighlight" data-noescape>	<span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+	<span style="color:#f92672">import</span> (
+		<span style="color:#e6db74">&#34;fmt&#34;</span>
+	)
+
+	<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Hello, Melbourne ☕️🎸🏈❤️&#34;</span>)
+	}
+</code></pre></div><p>Execute with</p>
+<pre><code>go run hello.go
+
+</code></pre></section><section>
+<h2 id="what-is-go-not">What is Go NOT?</h2>
+<p>Go favours simplicity and directness resulting in some purposeful omissions:</p>
+<ul>
+<li>No type hierarchies or inheritance</li>
+<li>No exceptions</li>
+<li>No method overloading</li>
+<li>No generics</li>
+<li>No decorators</li>
+<li>No named or optional arguments</li>
+<li>No operator overloading</li>
+<li>No macros</li>
+<li>No arguments about code style :)</li>
+</ul>
+</section><section>
+<h2 id="why-go">Why Go</h2>
+<ul>
+<li>simple: easy to learn and read</li>
+<li>a single obvious right way to do most things</li>
+<li>tools - <code>gofmt</code>, <code>goimports</code>, <code>godoc</code>, <code>go</code> <code>mod</code>, <code>go</code> <code>test</code>, <code>golangci-lint</code>, coverage</li>
+<li>standard library</li>
+<li>productive and fun</li>
+<li>lightweight concurrency</li>
+</ul>
+<p>Here is a great read on Rob Pike&rsquo;s blog about &ldquo;Why Go&rdquo; - <a href="https://commandcenter.blogspot.com/2012/06/less-is-exponentially-more.html">Less is Exponentially More</a></p>
+</section><section>
+<h2 id="demo">Demo</h2>
+</section><section>
+<h2 id="demo-1">Demo</h2>
+<ul>
+<li>2 seconds latency Pingserver</li>
+<li>Java Spring Boot implementation</li>
+<li>Go implementation</li>
+<li>Benchmark</li>
+</ul>
+</section><section>
+<h2 id="java-spring-boot-initializr">Java Spring Boot Initializr</h2>
+<pre><code>	── build.gradle
+	├── gradle
+	│   └── wrapper
+	│       ├── gradle-wrapper.jar
+	│       └── gradle-wrapper.properties
+	├── gradlew
+	├── gradlew.bat
+	├── settings.gradle
+	└── src
+	    ├── main
+	    │   ├── java
+	    │   │   └── com
+	    │   │       └── anz
+	    │   │           └── demo
+	    │   │               └── pingserver
+	    │   │                   ├── PingserverApplication.java
+	    │   │                   └── controller
+	    │   │                       └── PingController.java        &lt;--------- THAT'S THE ONE
+	    │   └── resources
+	    │       └── application.properties
+	    └── test
+	          .....
+		                                └── PingserverApplicationTests.java
+
+</code></pre></section><section>
+<h2 id="pingcontrollerjava">PingController.java</h2>
+<p>Source on <a href="https://github.com/anz-bank/go-slides/tree/master/pingserver/java">GitHub</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="nohighlight" data-noescape>	<span style="color:#f92672">package</span> com.anz.dcx.serverdemo.controller<span style="color:#f92672">;</span>
+
+	<span style="color:#f92672">import</span> org.springframework.http.MediaType<span style="color:#f92672">;</span>
+	<span style="color:#f92672">import</span> org.springframework.web.bind.annotation.GetMapping<span style="color:#f92672">;</span>
+	<span style="color:#f92672">import</span> org.springframework.web.bind.annotation.ResponseBody<span style="color:#f92672">;</span>
+	<span style="color:#f92672">import</span> org.springframework.web.bind.annotation.RestController<span style="color:#f92672">;</span>
+
+	<span style="color:#a6e22e">@RestController</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PingController</span> <span style="color:#f92672">{</span>
+
+	    <span style="color:#a6e22e">@GetMapping</span><span style="color:#f92672">(</span>path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/ping&#34;</span><span style="color:#f92672">,</span> produces <span style="color:#f92672">=</span> MediaType<span style="color:#f92672">.</span><span style="color:#a6e22e">TEXT_PLAIN_VALUE</span><span style="color:#f92672">)</span>
+	    <span style="color:#a6e22e">@ResponseBody</span>
+	    String <span style="color:#a6e22e">ping</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+	        Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">sleep</span><span style="color:#f92672">(</span>2000L<span style="color:#f92672">);</span>
+	        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;pong&#34;</span><span style="color:#f92672">;</span>
+	    <span style="color:#f92672">}</span>
+	<span style="color:#f92672">}</span>
+</code></pre></div><p>Execute with</p>
+<pre><code>	./gradlew clean bootRun
+</code></pre></section><section>
+<h2 id="go-implementation">Go Implementation</h2>
+<p>Source on <a href="https://github.com/anz-bank/go-slides/tree/master/pingserver/go">GitHub</a></p>
+<pre><code>├── go.mod
+├── go.sum
+└── main.go
+</code></pre><p>Execute with</p>
+<pre><code>go run main.go
+</code></pre></section><section>
+<h2 id="maingo">Main.go</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="nohighlight" data-noescape>	<span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+	<span style="color:#f92672">import</span> (
+		<span style="color:#e6db74">&#34;fmt&#34;</span>
+		<span style="color:#e6db74">&#34;log&#34;</span>
+		<span style="color:#e6db74">&#34;net/http&#34;</span>
+		<span style="color:#e6db74">&#34;time&#34;</span>
+	)
+
+	<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+		<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/ping&#34;</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
+			<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">2000</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Millisecond</span>)
+			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Fprint</span>(<span style="color:#a6e22e">w</span>, <span style="color:#e6db74">&#34;pong&#34;</span>)
+		})
+		<span style="color:#a6e22e">addr</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;:9090&#34;</span>
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Starting webserver on port&#34;</span>, <span style="color:#a6e22e">addr</span>)
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ListenAndServe</span>(<span style="color:#a6e22e">addr</span>, <span style="color:#66d9ef">nil</span>))
+	}
+</code></pre></div></section><section>
+<h2 id="benchmark">Benchmark</h2>
+<ul>
+<li>
+<p>19,000 concurrent requests</p>
+</li>
+<li>
+<p>Ubuntu 18.04 2.3GHz quad-core Intel Core i7</p>
+</li>
+<li>
+<p>Apache&rsquo;s <code>ab</code> command</p>
+<p>ab -n 19000 -c 19000 -s 200 -r localhost:8080/ping  ## Java
+ab -n 19000 -c 19000 -s 200 -r localhost:9090/ping  ## go</p>
+</li>
+<li>
+<p>Results</p>
+<p>Java median: 102.005 sec
+Java 95%:    135.280 sec</p>
+<p>Go median:   14.954 sec
+Go 95%:      15.061 sec</p>
+</li>
+<li>
+<p>Further details on <a href="https://github.com/anz-bank/go-slides/tree/master/pingserver#benchmark">GitHub</a></p>
+</li>
+</ul>
+</section><section>
+<h2 id="benchmark-1">Benchmark</h2>
+<ul>
+<li>Range of concurrent requests from 1,000 to 19,000
+<img src="_img/JavaVsGoLoadTest.png" alt="">500 _</li>
+</ul>
+</section><section>
+<h2 id="interlude-towards-continuous-deployment">Interlude: Towards Continuous Deployment</h2>
+</section><section>
+<h2 id="what-is-continuous-deployment-cd">What is Continuous Deployment (CD)?</h2>
+<p>Continuous Deployment != Continuous Delivery</p>
+<p><img src="_img/cd.jpg" alt="">.caption <a href="https://blog.crisp.se/2013/02/05/yassalsundman/continuous-delivery-vs-continuous-deployment">Yassal Sundman, Continuous Delivery vs Continuous Deployment</a></p>
+</section><section>
+<h2 id="continuous-deployment-quotes">Continuous Deployment Quotes</h2>
+<p>&ldquo;Continuous Deployment is a strategy for software releases wherein any code commit that passes the automated testing phase is automatically released into the production environment.&rdquo;
+<a href="https://searchitoperations.techtarget.com/definition/continuous-deployment">TechTarget definition</a></p>
+<p>&ldquo;Continuous deployment requires a highly developed culture of monitoring, being on call, and having the capacity to recover quickly.&rdquo;
+<a href="https://semaphoreci.com/blog/2017/07/27/what-is-the-difference-between-continuous-integration-continuous-deployment-and-continuous-delivery.html">Marko Anastasov, Semaphore Engineering Blog</a></p>
+</section><section>
+<h2 id="recommendations-for-cd-13">Recommendations for CD (1/3)</h2>
+<ul>
+<li>Use <em>trunk</em> <em>based</em> <em>development</em> (not GitFlow)</li>
+<li>Create <em>small</em> <em>PRs</em> (Pull Requests) that can be Squash Merged</li>
+<li>&hellip; which lead to revertible commits that have passed automated tests</li>
+<li>Protect <code>master</code> branch on GitHub</li>
+</ul>
+</section><section>
+<h2 id="recommendations-for-cd-23">Recommendations for CD (2/3)</h2>
+<p>Quality leads to the confidence to automatically deploy, so we need
+ways to increase and maintain quality.</p>
+<ul>
+<li>Write great commit messages</li>
+<li>Think about the reviewer and review your own PRs first</li>
+<li><em>Lint</em> strictly <code>golangci-lint</code> <code>run</code></li>
+<li>Ensure <em>100%</em> <em>coverage</em></li>
+</ul>
+</section><section>
+<h2 id="recommendations-for-cd-33">Recommendations for CD (3/3)</h2>
+<ul>
+<li>Test (unit &amp; system), lint &amp; cover as part of <em>CI</em> (Continuous Integration)</li>
+<li><em>Version</em> all deployments (use <a href="https://semver.org/">semver</a>; tag source, images etc.)</li>
+<li><em>Document</em> for newbies in the README.md (must!) and use godoc</li>
+<li>Enjoy your CD as last step after successful CI run on master</li>
+</ul>
+</section><section>
+<h2 id="protect-master-branch-on-github">Protect master branch on GitHub</h2>
+<pre><code>Settings -&gt; Options:
+[ ] Allow merge commits
+[x] Allow squash merging
+[ ] Allow rebase merging
+
+Settings -&gt; Branches -&gt; [Add rule|Edit] `master`:
+[x] Require pull request reviews before merging
+[x] Dismiss stale pull request approvals when new commits are pushed
+[x] Require status checks to pass before merging
+[x] Require branches to be up to date before merging
+[x] Include administrators
+
+</code></pre></section><section>
+<h2 id="commit-messages">Commit messages</h2>
+<p><img src="_img/xkcd_git_commit.png" alt="">.caption [[https://xkcd.com/1296/]]</p>
+</section><section>
+<h2 id="commit-messages---spot-the-difference">Commit messages - spot the difference</h2>
+<p>[[https://chris.beams.io/posts/git-commit/]]</p>
+<pre><code>$ git log --oneline -5 --author cbeams --before &quot;Fri Mar 26 2009&quot;
+
+e5f4b49 Re-adding ConfigurationPostProcessorTests after its brief removal in r814. @Ignore-ing the testCglibClassesAreLoadedJustInTimeForEnhancement() method as it turns out this was one of the culprits in the recent build breakage. The classloader hacking causes subtle downstream effects, breaking unrelated tests. The test method is still useful, but should only be run on a manual basis to ensure CGLIB is not prematurely classloaded, and should not be run as part of the automated build.
+2db0f12 fixed two build-breaking issues: + reverted ClassMetadataReadingVisitor to revision 794 + eliminated ConfigurationPostProcessorTests until further investigation determines why it causes downstream tests to fail (such as the seemingly unrelated ClassPathXmlApplicationContextTests)
+147709f Tweaks to package-info.java files
+22b25e0 Consolidated Util and MutableAnnotationUtils classes into existing AsmUtils
+7f96f57 polishing
+</code></pre><p>versus</p>
+<pre><code>$ git log --oneline -5 --author pwebb --before &quot;Sat Aug 30 2014&quot;
+
+5ba3db6 Fix failing CompositePropertySourceTests
+84564a0 Rework @PropertySource early parsing logic
+e142fd1 Add tests for ImportSelector meta-data
+887815f Update docbook dependency and generate epub
+ac8326d Polish mockito usage
+</code></pre></section><section>
+<h2 id="recipe-for-great-commit-messages">Recipe for great commit messages</h2>
+<p>[[https://chris.beams.io/posts/git-commit/]]</p>
+<ul>
+<li>Separate subject from body with a blank line</li>
+<li>Limit the subject line to 60 characters</li>
+<li><em>Capitalize</em> the subject line</li>
+<li>Do not end the subject line with a period</li>
+<li>Use the <em>imperative</em> <em>mood</em> in the subject line</li>
+<li>Wrap the body at 80 characters</li>
+<li>Use the body to explain what and why vs. how</li>
+</ul>
+</section><section>
+<h2 id="two-git-commands-for-precision-work">Two git commands for precision work</h2>
+<ul>
+<li>Use <code>git</code> <code>rebase</code> <code>-i</code> <code>COMMIT_HASH</code> to rework your commits if necessary</li>
+<li>Use <code>git</code> <code>add</code> <code>-p</code> for two separate concerns addressed in the one file</li>
+</ul>
+<p>Don&rsquo;t be afraid!
+Try it out on a new, throwaway branch.</p>
+</section><section>
+<h2 id="rebase-interactively">Rebase interactively</h2>
+<pre><code>git log --oneline
+58b250e WIP
+d558e36 Add coverage and pre-pr checklist to README.md
+c9724be Fix copyright holder in LICENCE
+aa3b728 Added Apache 2.0 LICENSE
+8a2fd40 Initial commit
+</code></pre><p>Drop the latest commit, reword <code>Added...</code> to <code>Add</code> and fold in the <code>Fix...</code> commit with:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="nohighlight" data-noescape>git rebase -i 8a2fd40
+</code></pre></div><p>and update commits in your editor with:</p>
+<pre><code>reword aa3b728 Added Apache 2.0 LICENSE
+fixup  c9724be Fix copyright holder in LICENCE
+pick   d558e36 Add coverage and pre-pr checklist to README.md
+drop   58b250e WIP
+</code></pre></section><section>
+<h2 id="rebase-a-feature-branch">Rebase a feature branch</h2>
+<p>Rebase will sequentially take the commits from <code>feature</code> and reapply them to <code>master</code>:</p>
+<pre><code>     A---B---C feature
+    /
+D---E---F---G master
+</code></pre><p>will become</p>
+<pre><code>             A'--B'--C' feature
+            /
+D---E---F---G master
+</code></pre><p>Use the following commands:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="nohighlight" data-noescape>git checkout master
+git pull upstream master <span style="color:#75715e">## or just `git pull` if `master` is set to track `upstream/master`</span>
+git checkout feature
+git rebase master
+git push -f
+</code></pre></div></section><section>
+<h2 id="update-branch-on-github">Update branch on Github</h2>
+<p>For an existing PR you can alternatively click <code>Update</code> <code>branch</code> on Github.
+This will merge <code>upstream/master</code> into <code>origin/feature</code>.
+Before adding any commits to <code>feature</code> locally run:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="nohighlight" data-noescape>git pull origin feature
+</code></pre></div></section><section>
+<h2 id="pull-request-pr-recommendations-12">Pull Request (PR) recommendations (1/2)</h2>
+<ul>
+<li>Choose a meaningful <em>PR</em> <em>title</em>, it will become your Squash Merge message</li>
+<li>Fill in <em>PR</em> <em>description</em> and reference an Issue for instance with #6</li>
+<li>Review the <em>Files</em> <em>changed</em> tab - many reviewers start here</li>
+<li>Review the <em>Commits</em> tab - some reviewers start here</li>
+<li>Review the <em>Checks</em> tab - all checks must pass</li>
+</ul>
+</section><section>
+<h2 id="pull-request-pr-recommendations-22">Pull Request (PR) recommendations (2/2)</h2>
+<ul>
+<li>Think of the reviewer: your code needs to be reviewable and that should be a prime concern when writing your code, commits and PRs</li>
+<li>Tag your PR Title with <code>[WIP]</code> if adjustments are needed</li>
+<li>Rework fixup commits with <code>git</code> <code>rebase</code> <code>-i</code>  <code>COMMIT_HASH</code> and force push</li>
+<li>Add reviewers and remove <code>[WIP]</code> tag when all of the above are met</li>
+<li>Delete branch once merged, especially when using a single remote (no forks)</li>
+</ul>
+</section><section>
+<h2 id="go-language-fundamentals">Go language fundamentals</h2>
+</section><section>
+<h2 id="tutorials-references-and-tools">Tutorials, references and tools</h2>
+<ul>
+<li><a href="https://tour.golang.org/">Tour of Go</a></li>
+<li><a href="https://gobyexample.com/">Go by example</a></li>
+<li><a href="https://golangbot.com/learn-golang-series/">Golangbot</a></li>
+<li><a href="https://play.golang.org/">Go playground</a></li>
+<li><a href="https://goplay.space">Go play space</a></li>
+<li><a href="https://golang.org/ref/spec">The Go Programming Language Specification</a></li>
+<li><a href="https://stackoverflow.com/questions/tagged/go?sort=votes&amp;pageSize=100">Stackoverflow</a></li>
+</ul>
+</section><section>
+<h2 id="getting-started">Getting started</h2>
+<ul>
+<li><a href="https://goplay.space/#cz9VBPWuHS3">Packages</a>, imports and exported names</li>
+<li><a href="https://goplay.space/#FJKCetXBe2c">Functions</a></li>
+</ul>
+<p><em>Notes:</em>
+Keep your exported identifiers to as few as possible
+Document them</p>
+</section><section>
+<h2 id="basic-types">Basic types</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="nohighlight" data-noescape>	<span style="color:#66d9ef">bool</span>
+
+	<span style="color:#66d9ef">string</span>
+
+	<span style="color:#66d9ef">int</span>  <span style="color:#66d9ef">int8</span>  <span style="color:#66d9ef">int16</span>  <span style="color:#66d9ef">int32</span>  <span style="color:#66d9ef">int64</span>
+	<span style="color:#66d9ef">uint</span> <span style="color:#66d9ef">uint8</span> <span style="color:#66d9ef">uint16</span> <span style="color:#66d9ef">uint32</span> <span style="color:#66d9ef">uint64</span> <span style="color:#66d9ef">uintptr</span>
+
+	<span style="color:#66d9ef">byte</span> <span style="color:#75715e">// alias for uint8
+</span><span style="color:#75715e"></span>
+	<span style="color:#66d9ef">rune</span> <span style="color:#75715e">// alias for int32
+</span><span style="color:#75715e"></span>	     <span style="color:#75715e">// represents a Unicode code point
+</span><span style="color:#75715e"></span>
+	<span style="color:#66d9ef">float32</span> <span style="color:#66d9ef">float64</span>
+
+	<span style="color:#66d9ef">complex64</span> <span style="color:#66d9ef">complex128</span>
+
+</code></pre></div></section><section>
+<h2 id="zero-values">Zero values</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="nohighlight" data-noescape><span style="color:#ae81ff">0</span>      <span style="color:#66d9ef">for</span> numeric types
+false  <span style="color:#66d9ef">for</span> the boolean type
+<span style="color:#e6db74">&#34;&#34;</span>     <span style="color:#66d9ef">for</span> strings
+nil    <span style="color:#66d9ef">for</span> pointers
+</code></pre></div></section><section>
+<h2 id="values-and-control-flow">Values and control flow</h2>
+<ul>
+<li><a href="https://goplay.space/#TOqGA-5RjUi">Values</a></li>
+<li><a href="https://goplay.space/#ouELtOl07G0">Variables</a></li>
+<li><a href="https://goplay.space/#Nc_taqy8IH2">Constants</a></li>
+<li><a href="https://goplay.space/#LISrbZdkUsy">Type conversion</a></li>
+<li><a href="https://goplay.space/#4IXB0oGgGsY">For</a></li>
+<li><a href="https://goplay.space/#AbYAd6LB2c3">If/Else</a></li>
+<li><a href="https://goplay.space/#GpoaMY8dboJ">Switch</a></li>
+</ul>
+</section><section>
+<h2 id="lab-setup">Lab setup</h2>
+</section><section>
+<h2 id="prerequisites-1">Prerequisites</h2>
+<ul>
+<li>Install <a href="https://git-scm.com/downloads">git</a></li>
+<li>Install <a href="https://golang.org/doc/install">go 1.12</a></li>
+<li>Install <a href="https://github.com/golangci/golangci-lint#install">golangci-lint</a></li>
+</ul>
+</section><section>
+<h2 id="repository-setup">Repository setup</h2>
+<ul>
+<li>Login to github.com</li>
+<li>Click <code>Fork</code> in the top right corner of [[https://github.com/anz-bank/go-course]]</li>
+<li>Clone your fork. <code>USERNAME</code> is your GitHub username:</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="nohighlight" data-noescape>git clone https://github.com/USERNAME/go-course.git
+cd go-course
+</code></pre></div><ul>
+<li>Create <code>upstream</code> remote pointing to <a href="https://github.com/anz-bank/go-course">anz-bank/go-course</a>:</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="nohighlight" data-noescape>git remote add upstream https://github.com/anz-bank/go-course.git
+git remote update
+git branch -u upstream/master master
+git pull
+</code></pre></div></section><section>
+<h2 id="pr-from-own-fork---typical-git-workflow">PR from own fork - typical git workflow</h2>
+<p>Start work on a new branch <code>lab1</code> with:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="nohighlight" data-noescape>git checkout master
+git pull upstream master  <span style="color:#75715e">## with upstream/master tracking just use `git pull`</span>
+git checkout -b lab1
+</code></pre></div><p>Write, test and commit code code, then:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="nohighlight" data-noescape>git push -u origin
+</code></pre></div></section><section>
+<h2 id="creating-prs">Creating PRs</h2>
+<ul>
+<li>from <code>feature</code> branch of your own fork (remote <code>origin</code>)</li>
+<li>to <code>master</code> on <a href="https://github.com/anz-bank/go-course">anz-bank/go-course</a> (remote <code>upstream</code>)</li>
+</ul>
+<p>Follow the <a href="https://github.com/anz-bank/go-course#pre-pr-checklist">PR checklist</a> before submitting</p>
+<p>When ready, submit and add the <code>Ready</code> <code>for</code> <code>review</code> tag</p>
+</section><section>
+<h2 id="update-feature-branch">Update feature branch</h2>
+<p>If <code>master</code> has advanced after <code>feature</code> branch and PR creation you have two options:</p>
+</section><section>
+<p>#Rebase* *feature* *branch*</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="nohighlight" data-noescape><span style="color:#a6e22e">git</span> <span style="color:#a6e22e">checkout</span> <span style="color:#a6e22e">master</span>
+<span style="color:#a6e22e">git</span> <span style="color:#a6e22e">pull</span> <span style="color:#a6e22e">upstream</span> <span style="color:#a6e22e">master</span> <span style="color:#960050;background-color:#1e0010">##</span> <span style="color:#a6e22e">or</span> <span style="color:#a6e22e">just</span> <span style="color:#e6db74">`git pull`</span> <span style="color:#66d9ef">if</span> <span style="color:#e6db74">`master`</span> <span style="color:#a6e22e">is</span> <span style="color:#a6e22e">set</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">track</span> <span style="color:#e6db74">`upstream/master`</span>
+<span style="color:#a6e22e">git</span> <span style="color:#a6e22e">checkout</span> <span style="color:#a6e22e">feature</span>
+<span style="color:#a6e22e">git</span> <span style="color:#a6e22e">rebase</span> <span style="color:#a6e22e">master</span>
+<span style="color:#a6e22e">git</span> <span style="color:#a6e22e">push</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">f</span>
+</code></pre></div><p>or</p>
+</section><section>
+<p>#Update* *branch* *on* *GitHub*</p>
+<p>For an existing PR you can alternatively click <code>Update</code> <code>branch</code> on Github.
+This will merge <code>upstream/master</code> into <code>origin/feature</code>.
+Before adding any commits to <code>feature</code> locally run:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="nohighlight" data-noescape>git pull origin feature
+</code></pre></div></section><section>
+<h2 id="lab-pr-approval-flow---programmer">Lab PR approval flow - Programmer</h2>
+<ul>
+<li>Label with the appropriate lab tag (eg: <code>lab1</code>)</li>
+<li>When ready, label with <code>Ready</code> <code>for</code> <code>review</code></li>
+<li>Wait for PR to be labelled <code>Approved</code> <code>by</code> <code>colleague</code> or <code>Changes</code> <code>requested</code></li>
+<li>If approved by colleague, wait for a CODEOWNER to approve and label with <code>Merge</code> <code>me</code></li>
+<li>Merge</li>
+</ul>
+</section><section>
+<h2 id="lab-pr-approval-flow---reviewer">Lab PR approval flow - Reviewer</h2>
+<ul>
+<li>Remove <code>Ready</code> <code>for</code> <code>review</code> and add <code>Under</code> <code>review</code></li>
+<li>Label with either <code>Approved</code> <code>by</code> <code>colleague</code> or <code>Changes</code> <code>requested</code> and remove <code>Under</code> <code>review</code></li>
+</ul>
+</section><section>
+<h2 id="test-samples">Test samples</h2>
+<ul>
+<li><a href="https://goplay.space/#HcgMVMtjWJo">Basics</a></li>
+<li><a href="https://goplay.space/#Zy2ta-z8vrO">Multiple cases</a></li>
+<li><a href="https://goplay.space/#dCbjRkHqm_3">Testify</a></li>
+<li><a href="https://goplay.space/#XoXe-FUSoCD">Suites</a></li>
+</ul>
+<p><a href="https://dave.cheney.net/2019/05/07/prefer-table-driven-tests">Dave Cheney - table driven tests</a></p>
+</section><section>
+<h2 id="lab-1---fibonacci">Lab 1 - Fibonacci</h2>
+<ul>
+<li>
+<p>Create an executable go program in directory <code>01_fib/USERNAME</code></p>
+</li>
+<li>
+<p>Write a function that prints the first n Fibonacci numbers</p>
+<p>func fib(n int)</p>
+</li>
+<li>
+<p>Call <code>fib(7)</code> in <code>main</code> to print</p>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="nohighlight" data-noescape>  <span style="color:#ae81ff">1</span>
+  <span style="color:#ae81ff">1</span>
+  <span style="color:#ae81ff">2</span>
+  <span style="color:#ae81ff">3</span>
+  <span style="color:#ae81ff">5</span>
+  <span style="color:#ae81ff">8</span>
+  <span style="color:#ae81ff">13</span>
+</code></pre></div><ul>
+<li>Bonus points: For negative n print <a href="https://en.wikipedia.org/wiki/Fibonacci_number#Negafibonacci">Negafibonacci numbers</a>.</li>
+</ul>
+</section><section>
+<h2 id="iterable-data-types-and-range">Iterable data types and Range</h2>
+<ul>
+<li><a href="https://goplay.space/#XrEt6YEl7QC">Arrays</a></li>
+<li><a href="https://goplay.space/#_KaPpZeRNPA">Slices</a></li>
+<li><a href="https://goplay.space/#zBKEYY8UM5T">Maps</a></li>
+<li><a href="https://goplay.space/#FezVQTvmsqg">Range</a></li>
+</ul>
+</section><section>
+<h2 id="lab-2---bubble-sort">Lab 2 - Bubble sort</h2>
+<ul>
+<li>
+<p>Create an executable go program in directory <code>02_bubble/USERNAME</code></p>
+</li>
+<li>
+<p>Write a function that returns a sorted copy of <code>int</code> slice <code>s</code> using <a href="https://en.wikipedia.org/wiki/Bubble_sort">Bubble sort</a>:</p>
+<p>func bubble(s []int) []int</p>
+</li>
+<li>
+<p>Call <code>fmt.Println(bubble([]int{3,</code> <code>2,</code> <code>1,</code> <code>5}))</code> in <code>main</code> to print:</p>
+<p>[1 2 3 5]</p>
+</li>
+<li>
+<p>Bonus points: implement <a href="https://en.wikipedia.org/wiki/Insertion_sort">Insertion sort</a></p>
+</li>
+<li>
+<p>Extra bonus points: implement an <em>O(n</em> <em>log(n))</em> sorting algorithm</p>
+</li>
+</ul>
+</section><section>
+<h2 id="lab-3---letter-frequency">Lab 3 - Letter frequency</h2>
+<ul>
+<li>
+<p>Create an executable go program in directory <code>03_letters/USERNAME</code></p>
+</li>
+<li>
+<p>Write a function that returns a mapping of each letter to its frequency:</p>
+<p>func letters(s string) map[rune]int</p>
+</li>
+<li>
+<p>Write a function that returns a sorted slice of strings with elements <code>&quot;{key}:{val}&quot;</code>. Use package <a href="https://golang.org/pkg/sort/">sort</a>:</p>
+<p>func sortLetters(m map[rune]int) []string</p>
+</li>
+<li>
+<p>Call <code>fmt.Println(strings.Join(sortLetters(letters(&quot;aba&quot;)),</code> <code>&quot;\n&quot;))</code> in <code>main</code> to print:</p>
+<p>a:2
+b:1</p>
+</li>
+<li>
+<p>Bonus points: comprehensive tests</p>
+</li>
+</ul>
+</section><section>
+<h2 id="functions">Functions</h2>
+<ul>
+<li><a href="https://goplay.space/#gHOzTi05LkI">Functions</a>: parameters and return values</li>
+<li><a href="https://goplay.space/#-G75RWA1DW1">Variadic Functions</a></li>
+<li><a href="https://goplay.space/#olrpJoSte3n">Closures</a></li>
+</ul>
+</section><section>
+<h2 id="lab-4---numeronym">Lab 4 - Numeronym</h2>
+<ul>
+<li>
+<p>Create an executable go program in directory <code>04_numeronym/USERNAME</code></p>
+</li>
+<li>
+<p>Write a function that returns a slice of numeronyms for its input strings:</p>
+<p>func numeronyms(vals &hellip;string) []string</p>
+</li>
+<li>
+<p>Call <code>fmt.Println(numeronyms(&quot;accessibility&quot;,</code> <code>&quot;Kubernetes&quot;,</code> <code>&quot;abc&quot;))</code> in <code>main</code> to print:</p>
+<p>[a11y K8s abc]</p>
+</li>
+</ul>
+</section><section>
+<h2 id="data-structures-and-interfaces">Data structures and interfaces</h2>
+<ul>
+<li><a href="https://goplay.space/#MYeoiSdP4tp">Pointers</a></li>
+<li><a href="https://goplay.space/#eoBLEu8lRvl">Structs</a></li>
+<li><a href="https://goplay.space/#OkA4buOlTe1">Methods</a></li>
+<li><a href="https://goplay.space/#An9Um8oSShm">Interfaces</a></li>
+</ul>
+<p>&ldquo;The bigger the interface, the weaker the abstraction.&rdquo; - <a href="https://go-proverbs.github.io/">Rob Pike</a></p>
+</section><section>
+<h2 id="embedding---interfaces">Embedding - Interfaces</h2>
+<p>&ldquo;Go does not provide the typical, type-driven notion of subclassing, but it does have the ability to “borrow” pieces of an implementation by embedding types within a struct or interface.&rdquo; - <a href="https://golang.org/doc/effective_go.html#embedding">Effective Go</a></p>
+<pre><code>type Reader interface {
+    Read(p []byte) (n int, err error)
+}
+
+type Writer interface {
+    Write(p []byte) (n int, err error)
+}
+
+// ReadWriter is the interface that combines the Reader and Writer interfaces.
+type ReadWriter interface {
+    Reader
+    Writer
+}
+</code></pre>
+</section><section>
+<h2 id="embedding---structs">Embedding - Structs</h2>
+<p>&ldquo;When we embed a type, the methods of that type become methods of the outer type, but when they are invoked the receiver of the method is the inner type, not the outer one.&rdquo; - <a href="https://golang.org/doc/effective_go.html#embedding">Effective Go</a></p>
+<ul>
+<li>The same applies for all fields within an embedded type</li>
+</ul>
+</section><section>
+<h2 id="precedence-when-embedding">Precedence when Embedding</h2>
+<p>Embedding types introduces the possiblity for naming conflicts. Go follows some simple rules to help resolve this:</p>
+<ul>
+<li>A field or method <code>X</code> will hide any other field or method <code>X</code> found in a more deeply nested part of the type</li>
+<li>If a field or method appears at the same nesting level, it will return an error</li>
+</ul>
+</section><section>
+<h2 id="examples">Examples</h2>
+<ul>
+<li><a href="https://goplay.space/#lAl70x0QACE">Embedded Structs</a></li>
+<li><a href="https://goplay.space/#vLgi3SMtLZp">Embedded Interfaces</a></li>
+<li><a href="https://goplay.space/#cmWFJ26jm2E">Precedence</a></li>
+</ul>
+</section><section>
+<h2 id="lab-5---stringer">Lab 5 - Stringer</h2>
+<ul>
+<li>
+<p>Create an executable go program in directory <code>05_stringer/USERNAME</code></p>
+</li>
+<li>
+<p>Make the <code>IPAddr</code> type implement <code>fmt.Stringer</code> to print the address as a dotted quad</p>
+</li>
+<li>
+<p>Find hints at <a href="https://tour.golang.org/methods/18">Tour of Go Exercise: Stringers</a></p>
+</li>
+<li>
+<p>Call <code>fmt.Println(IPAddr{127,</code> <code>0,</code> <code>0,</code> <code>1})</code> in <code>main</code> to print:</p>
+<p>127.0.0.1</p>
+</li>
+</ul>
+</section><section>
+<h2 id="go-for-java-devs">Go for Java devs</h2>
+<ul>
+<li><a href="https://goplay.space/#lQNE-kuVf-N">Functions are lambdas</a></li>
+<li><a href="https://goplay.space/#HVSd6qpj74R">Typed constants are enums</a></li>
+<li>exported == public</li>
+<li>unexported == protected, not private</li>
+<li>There are no classes, though most types behave like them</li>
+<li>embedding == composition + inheritence</li>
+<li>map[type]struct{} == Set<!-- raw HTML omitted --></li>
+<li><a href="https://goplay.space/#cL8GEUOhlb5">Beware of pointers</a></li>
+<li><a href="https://goplay.space/#UF61v58dVYT">Pointers will also save your day</a></li>
+</ul>
+</section><section>
+<h2 id="go-for-java-devs-1">Go for Java devs</h2>
+<ul>
+<li>Not everything is object oriented. Pure functions are just fine</li>
+<li>Don&rsquo;t worry about abstraction up front, it is easy to abstract in go</li>
+<li>Don&rsquo;t worry about starting thousands of goroutines (worry when you get to millions)</li>
+<li>Don&rsquo;t worry about access scope within a package</li>
+<li>Don&rsquo;t worry about frameworks</li>
+<li>Don&rsquo;t worry about patterns</li>
+<li>Don&rsquo;t overstructure your project</li>
+<li>Remember to check for errors</li>
+<li>Don&rsquo;t fight the formatter</li>
+<li>Don&rsquo;t panic</li>
+</ul>
+</section><section>
+<h2 id="test-two-implementations-of-interface-in-suite-12">Test two implementations of interface in suite (1/2)</h2>
+<pre><code>// scaler.go
+type scaler interface {
+    scale(float64)
+}
+
+type rect struct {
+    a, b int
+}
+
+func (r *rect) scale(s float64) {
+    r.a = int(float64(r.a) * s)
+    r.b = int(float64(r.b) * s)
+}
+
+type circle struct {
+    r int
+}
+
+func (c *circle) scale(s float64) {
+    c.r = int(float64(c.r) * s)
+}
+</code></pre>
+</section><section>
+<h2 id="test-two-implementations-of-interface-in-suite-22">Test two implementations of interface in suite (2/2)</h2>
+<pre><code>type scalerSuite struct {
+    suite.Suite
+    scaler scaler
+}
+
+func (s *scalerSuite) TestScaler() {
+    r := assert.New(s.T())
+    initial := fmt.Sprintf(&quot;%#v&quot;, s.scaler)
+
+    s.scaler.scale(2.0)
+    scaled := fmt.Sprintf(&quot;%#v&quot;, s.scaler)
+
+    s.scaler.scale(0.5)
+    scaledBack := fmt.Sprintf(&quot;%#v&quot;, s.scaler)
+
+    fmt.Printf(&quot;%s\n%s\n%s\n&quot;, initial, scaled, scaledBack)
+    r.Equal(initial, scaledBack)
+    r.NotEqual(initial, scaled)
+}
+
+func TestStorer(t *testing.T) {
+    suite.Run(t, &amp;scalerSuite{scaler: &amp;circle{2}})
+    suite.Run(t, &amp;scalerSuite{scaler: &amp;rect{1, 1}})
+}
+</code></pre>
+</section><section>
+<h2 id="lab-6---crud-puppy-with-interface">Lab 6 - CRUD puppy with interface</h2>
+<ul>
+<li>Create an executable go program in directory <code>06_puppy/USERNAME</code> (see <a href="https://github.com/anz-bank/go-samplerest/blob/master/pkg/pet/types.go">hints</a>)</li>
+<li>Implement a <code>Puppy</code> struct containing <code>ID</code>, <code>Breed</code>, <code>Colour</code>, <code>Value</code>.</li>
+<li>Create <code>Storer</code> interface with <a href="https://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a> methods for <code>Puppy</code></li>
+<li>Write a <code>MapStore</code> implementation of <code>Storer</code> backed by a <code>map</code></li>
+<li>Write a <code>SyncStore</code> implementation of <code>Storer</code> backed by a <a href="https://golang.org/pkg/sync/#Map">sync.Map</a></li>
+<li>Keep all implementation files in the same folder and in package <code>main</code></li>
+<li>Test against the <code>Storer</code> interface and run in <a href="https://godoc.org/github.com/stretchr/testify/suite">suite</a> with both implementations</li>
+</ul>
+<p><img src="_img/crud_puppy.jpg" alt="">.caption J. D. Frazer &ldquo;Illiad&rdquo;, User Friendly - <a href="https://en.wikipedia.org/wiki/User_Friendly#Crud_Puppy">Crud Puppy</a></p>
+</section><section>
+<h2 id="error-handling-in-go">Error Handling in Go</h2>
+</section><section>
+<h2 id="errors-in-go">Errors in Go</h2>
+<ul>
+<li><code>error</code> is a builtin interface <a href="https://golang.org/src/builtin/builtin.go?s=11246:11286#L251">source: error</a></li>
+</ul>
+<pre><code>	type error interface {
+		Error() string
+	}
+</code></pre><ul>
+<li>Check errors explicitly</li>
+</ul>
+</section><section>
+<h2 id="errors-in-go-12">Errors in Go (1/2)</h2>
+<ul>
+<li>Create error values using <a href="https://golang.org/src/errors/errors.go?s=293:320#L1"><code>errors.New()</code></a>:
+var ErrPermission = errors.New(&ldquo;permission denied&rdquo;)</li>
+<li>Alternatively using <code>fmt.Errorf</code>:
+return fmt.Errorf(&ldquo;archive/tar: missed writing %d bytes&rdquo;, nb)</li>
+<li>Exported error variables start with &lsquo;Err&rsquo; (like ErrTimeout, ErrNotFound)</li>
+</ul>
+</section><section>
+<h2 id="errors-in-go-22">Errors in Go (2/2)</h2>
+<ul>
+<li>Create custom error types <a href="https://golang.org/pkg/net/#AddrError">source: AddrError</a>:
+type AddrError struct {
+Err  string
+Addr string
+}
+func (e *AddrError) Error() string {
+if e == nil {
+return &ldquo;<!-- raw HTML omitted -->&rdquo;
+}
+s := e.Err
+if e.Addr != &quot;&quot; {
+s = &ldquo;address &quot; + e.Addr + &ldquo;: &quot; + s
+}
+return s
+}</li>
+<li>Error values can be logged and printed:
+log.Println(err)</li>
+</ul>
+</section><section>
+<h2 id="error-handling">Error Handling</h2>
+<ul>
+<li><a href="https://goplay.space/#X0qqmcrO6om">Check for error</a></li>
+<li><a href="https://goplay.space/#HiLw8Y_D_6T">Compare error values</a></li>
+<li><a href="https://goplay.space/#CII8be9-TqW">Compare error types</a></li>
+<li><a href="https://goplay.space/#I6UJNHe6C7v">Program with error</a></li>
+<li>By convention many standard library functions return <code>error</code> as the second return value</li>
+</ul>
+<p>&ldquo;Errors are values.&rdquo;  - <a href="https://blog.golang.org/errors-are-values">Rob Pike</a></p>
+</section><section>
+<h2 id="defer">Defer</h2>
+<ul>
+<li><code>defer</code> delays the execution of a function until the surrounding function returns</li>
+<li>When <code>defer</code> is called the parameters to the call are evaluated and saved</li>
+<li>Deferred functions are called when function returns or stack unwinds</li>
+<li>Syntax:
+defer <!-- raw HTML omitted --></li>
+<li>Deferred functions are called <a href="https://goplay.space/#ZX5S9xyOS57">in reverse order</a></li>
+<li>Most commonly used for <a href="https://goplay.space/#mh9MhO9rDXt">resource cleanup</a> (close IO resources, release locks etc.)</li>
+</ul>
+</section><section>
+<h2 id="panic-and-recover-12">Panic and Recover (1/2)</h2>
+<ul>
+<li><code>panic</code> and <code>recover</code> are builtin functions</li>
+<li><code>panic</code> and <code>recover</code> behave similar to <code>throw/catch</code> in other languages</li>
+<li><code>panic</code>:
+func panic(interface{})</li>
+<li><code>panic</code> unwinds the stack, calling deferred functions up to the top-level function of the executing goroutine</li>
+<li><code>recover</code> (see next slide) can intercept this unwinding</li>
+<li>Without <code>recover</code>, the program is terminated and the error condition is reported</li>
+</ul>
+</section><section>
+<h2 id="panic-and-recover-22">Panic and Recover (2/2)</h2>
+<ul>
+<li><code>recover</code>:
+func recover() interface{}</li>
+<li><code>recover</code> allows a program to handle panic called in another function</li>
+<li>Must be called from within a deferred function in the same goroutine</li>
+<li>Returns the value passed by call to panic</li>
+</ul>
+</section><section>
+<h2 id="dont-panic">Don&rsquo;t Panic</h2>
+<ul>
+<li>Panic could terminate the goroutine or the program</li>
+<li>Use <code>panic</code> rarely and judiciously in your own code</li>
+<li>Use it in deeply nested internal methods/functions and return an error/status to the caller</li>
+<li>Don&rsquo;t <code>panic</code> across package boundaries</li>
+<li>Don&rsquo;t make a panic part of a package&rsquo;s API, instead always recover at the interface level of the package and return an error</li>
+<li><a href="https://goplay.space/#fFiO42mIOHo">Basic illustration of panic</a></li>
+<li><a href="https://goplay.space/#c8XO7QBMfA5">Basic illustration of panic and recover</a></li>
+<li><a href="https://goplay.space/#V5ckmhsPUHv">Recover and return value</a></li>
+</ul>
+</section><section>
+<h2 id="lab-7---errors">Lab 7 - Errors</h2>
+<ul>
+<li>
+<p>Create an executable go program in directory <code>07_errors/USERNAME</code></p>
+</li>
+<li>
+<p>Copy the CRUD puppy from upstream master <code>06_puppy/USERNAME</code></p>
+</li>
+<li>
+<p>Add a custom error type <code>Error</code> with fields <code>Message</code> and <code>Code</code></p>
+</li>
+<li>
+<p>Extend the <code>Storer</code> interface for all methods to also return <code>error</code></p>
+</li>
+<li>
+<p>Create errors for:</p>
+<ul>
+<li>Value &lt; 0</li>
+<li>ID not found in Read, Update and Delete</li>
+</ul>
+</li>
+<li>
+<p>Add locking for proper use of sync.Map</p>
+</li>
+<li>
+<p>Bonus points: Add a third <code>Storer</code> implementation using <a href="https://github.com/syndtr/goleveldb">LevelDB</a></p>
+</li>
+</ul>
+</section><section>
+<h2 id="go-concurrency">Go Concurrency</h2>
+</section><section>
+<h2 id="topics">Topics</h2>
+<ul>
+<li>Concurrency</li>
+<li>Concurrency in Go</li>
+<li>Goroutines</li>
+<li>Channels</li>
+<li>Range &amp; Select</li>
+<li>Under the hood: Processes, Threads, Goroutines</li>
+<li>Under the hood: Go Runtime</li>
+</ul>
+</section><section>
+<h2 id="concurrency">Concurrency</h2>
+<p>Definition</p>
+<ul>
+<li>Concurrency is the ability of different parts or units of a program, algorithm, or problem to be executed out-of-order or in partial order, without affecting the final outcome <a href="https://en.wikipedia.org/wiki/Concurrent_computing">Source: Wikipedia</a></li>
+<li>Parallelism is the ability to run different parts or units of a program simultaneously</li>
+</ul>
+<p><a href="https://go-proverbs.github.io/">Rob Pike</a> <a href="https://www.youtube.com/watch?v=cN_DpYBzKso">Talk</a>, <a href="https://talks.golang.org/2012/waza.slide">Slides</a></p>
+<ul>
+<li>&ldquo;Don&rsquo;t communicate by sharing memory, share memory by communicating.&rdquo;</li>
+<li>&ldquo;Concurrency is not parallelism.&rdquo;</li>
+<li>&ldquo;Concurrency is about structure, parallelism is about execution.&rdquo;</li>
+</ul>
+</section><section>
+<h2 id="concurrency-in-go">Concurrency in Go</h2>
+<p>Go provides:</p>
+<ul>
+<li>Concurrent execution (goroutines)</li>
+<li>Synchronisation and message passing (channels)</li>
+<li>Multi-way concurrent control (select)</li>
+</ul>
+</section><section>
+<h2 id="goroutines">Goroutines</h2>
+<ul>
+<li>Goroutine is an extremely lightweight thread of execution</li>
+<li>Low initial stack size (2 Kb) that grows</li>
+<li>Runs concurrently like threads</li>
+<li>Start a goroutine <a href="https://play.golang.org/p/Xp-QlM1nTGC">using the &lsquo;go&rsquo; statement</a>
+go <!-- raw HTML omitted --></li>
+</ul>
+</section><section>
+<h2 id="channels">Channels</h2>
+<ul>
+<li>Communication mechanism (conduit) that lets goroutines exchange data</li>
+<li>Each channel allows goroutines to send/receive a particular data type (called element type)</li>
+<li>Declare channel using <code>chan</code> keyword</li>
+<li>Create unbuffered channel
+ch := make(chan int) // ch is an unbuffered channel of <code>int</code> element type</li>
+<li>Create buffered channel
+ch := make(chan int, 10) // ch is a buffered channel of size 10 and type <code>int</code></li>
+<li>Close channel using <code>close()</code> function</li>
+</ul>
+</section><section>
+<h2 id="channel-operations-12">Channel Operations (1/2)</h2>
+<ul>
+<li>
+<p>Send and Receive values with the channel operator &lt;-</p>
+<p>ch &lt;- v // send v to the channel ch
+v := &lt;-ch // receive from ch and assign it to v</p>
+</li>
+<li>
+<p>Send to buffered channel blocks only when the channel is full</p>
+</li>
+<li>
+<p>Receive from a channel blocks when the channel is empty</p>
+</li>
+<li>
+<p>Sender can close the channel to indicate no more values will be sent</p>
+</li>
+<li>
+<p>Receiver can test whether a channel has been closed</p>
+<p>v, ok := &lt;-ch // ok is false if channel is closed and no more data is available</p>
+</li>
+<li>
+<p>Sending message on a closed/nil channel causes the program to panic</p>
+</li>
+<li>
+<p>Receive on a closed channel never blocks</p>
+</li>
+</ul>
+</section><section>
+<h2 id="channel-operations-22">Channel Operations (2/2)</h2>
+<ul>
+<li>
+<p>Range on a channel</p>
+<p>for v := range ch {
+fmt.Println(v)
+}</p>
+</li>
+<li>
+<p>Range over a channel that never closes never finishes</p>
+</li>
+</ul>
+</section><section>
+<h2 id="select-statement">select Statement</h2>
+<ul>
+<li>
+<p>Allows composing of channels</p>
+</li>
+<li>
+<p>Chooses which set of possible &ldquo;send&rdquo; or &ldquo;receive&rdquo; operations will proceed</p>
+<p>var ch1, ch2 chan int
+select {
+case ch1 &lt;- 1:
+fmt.Println(&ldquo;1 sent on ch1&rdquo;)
+case x, ok := &lt;-ch2:
+if ok {
+fmt.Printf(&quot;%v received on ch2&rdquo;, x)
+} else {
+fmt.Println(&ldquo;ch2 is closed&rdquo;)
+}
+default:
+fmt.Println(&ldquo;no communication&rdquo;)
+}</p>
+</li>
+</ul>
+</section><section>
+<h2 id="under-the-hood-process-threads-and-os-scheduling">Under the hood: Process, Threads and OS Scheduling</h2>
+<p><img src="_img/process.png" alt="">.caption [[https://randu.org/tutorials/threads/]]</p>
+<ul>
+<li>Large (default 2 Mb on Linux) stack size</li>
+<li>1x1 mapping between user and kernel threads</li>
+</ul>
+</section><section>
+<h2 id="under-the-hood-go-runtime">Under the hood: Go Runtime</h2>
+<ul>
+<li>Scheduling, Memory Management, Garbage Collection</li>
+<li>Scheduler tracks goroutines and schedules them to run on a set of OS threads</li>
+<li>GOMAXPROCS and runtime.GOMAXPROCS() sets the number of OS threads</li>
+</ul>
+<p><img src="_img/go_runtime.png" alt="">.caption <a href="http://www1.cs.columbia.edu/~aho/cs6998/reports/12-12-11_DeshpandeSponslerWeiss_GO.pdf">Analysis of the Go runtime scheduler</a></p>
+</section><section>
+<h2 id="channel-examples">Channel Examples</h2>
+<ul>
+<li><a href="https://play.golang.org/p/dIQTgdZ2kvQ">Send and receive on an unbuffered channel</a></li>
+<li><a href="https://play.golang.org/p/DVkhMmqfs_x">Send and receive on a buffered channel</a></li>
+<li><a href="https://play.golang.org/p/840nqny9Y4D">Receive from a channel using &lsquo;range&rsquo;</a></li>
+<li><a href="https://play.golang.org/p/BQtEdOoAjoZ">Timeout with &lsquo;select&rsquo;</a></li>
+</ul>
+</section><section>
+<h2 id="tools-and-conventions">Tools and Conventions</h2>
+</section><section>
+<h2 id="project-layout">Project layout</h2>
+<p>For non-trivial size projects follow the layout suggested by <a href="https://github.com/golang-standards/project-layout">golang-standards</a>
+Abridged version:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="nohighlight" data-noescape>	├── README.md
+	├── go.mod
+	├── go.sum
+	├── cloudbuild.yaml
+	├── .gitignore
+	├── .golangci.yml
+	├── pkg
+	│   ├── bar
+	│   │   ├── bar.go
+	│   │   ├── baz.go
+	│   │   └── bar_test.go
+	│   └── foo
+	│       ├── foo.go
+	│       └── foo_test.go
+	├── cmd
+	│   └── fooserver
+	│       └── main.go
+	├── docs
+	└── vendor
+</code></pre></div></section><section>
+<h2 id="lab-8---project-layout">Lab 8 - Project Layout</h2>
+<ul>
+<li>Copy the CRUD puppy from upstream master <code>07_errors/USERNAME</code></li>
+<li>Create directory <code>08_project/USERNAME</code> containing</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="nohighlight" data-noescape>  ├── README.md
+  ├── pkg
+  │   └── puppy
+  │       ├── types.go
+  │       ├── types_test.go
+  │       ├── errors.go
+  │       ├── errors_test.go
+  │       └── store
+  │           ├── storer.go
+  │           └── .... store files and tests, e.g. mapstore.go
+  └── cmd
+  └── puppy-server
+  └── main.go
+</code></pre></div><ul>
+<li>Add project introduction and how to build, run &amp; test it to <code>README.md</code></li>
+</ul>
+</section><section>
+<h2 id="go-tool-chain">Go tool chain</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="nohighlight" data-noescape>	go help
+	go version
+	go build ./...
+	go test ./...
+	go install ./...
+	go mod init
+	go mod vendor
+	go mod tidy
+	go clean -modcache
+	go test -coverprofile<span style="color:#f92672">=</span>coverage.out ./... <span style="color:#f92672">&amp;&amp;</span> go tool cover -html<span style="color:#f92672">=</span>coverage.out
+
+</code></pre></div></section><section>
+<h2 id="other-tools">Other tools</h2>
+<p>Lint with</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="nohighlight" data-noescape>golangci-lint run
+</code></pre></div><p>and configure the linter in <code>.golangci.yml</code></p>
+<p>Use <code>gofmt</code> or <code>goimport</code> as part of your editor/IDE setup</p>
+</section><section>
+<h2 id="go-standard-library">Go standard library</h2>
+<p>[[https://golang.org/pkg/]]</p>
+<ul>
+<li>fmt</li>
+<li>strings</li>
+<li>time</li>
+<li><a href="https://goplay.space/#zp5qANw7LCZ">encoding/json</a></li>
+<li>net/http</li>
+<li>regexp</li>
+<li>sort</li>
+<li>database/sql</li>
+<li>os</li>
+<li>path</li>
+<li>bytes</li>
+<li>&hellip;</li>
+</ul>
+</section><section>
+<h2 id="json---de-serialisation">JSON - (De-)Serialisation</h2>
+<ul>
+<li>
+<p><code>Marshal</code> converts a value into a JSON byte array</p>
+</li>
+<li>
+<p><code>Unmarshal</code> converts a JSON-encoded byte array into a value</p>
+</li>
+<li>
+<p>An <code>Encoder</code> marshals values as JSON to a stream (<code>io.Writer</code>)</p>
+</li>
+<li>
+<p>A <code>Decoder</code> unmarshals JSON-encoded values from a stream (<code>io.Reader</code>)</p>
+<p>func Marshal(v interface{}) ([]byte, error) { /* &hellip; */ }</p>
+<p>func Unmarshal(data []byte, v interface{}) error { /* &hellip; */ }</p>
+</li>
+</ul>
+</section><section>
+<h2 id="json---field-tags">JSON - Field Tags</h2>
+<ul>
+<li>Attach a &lsquo;json&rsquo; field tag to customise (un)marshalling</li>
+<li>Common error is making Go fields private (lower case) which results in the fields not being (un)marshalled</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="nohighlight" data-noescape><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Car</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">Manufacturer</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;manufacturer&#34;`</span>
+    <span style="color:#a6e22e">Model</span>        <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;model&#34;`</span>
+    <span style="color:#a6e22e">Year</span>         <span style="color:#66d9ef">int64</span>  <span style="color:#e6db74">`json:&#34;year,omitempty&#34;`</span>
+}
+</code></pre></div></section><section>
+<h2 id="json---zero-values">JSON - Zero Values</h2>
+<ul>
+<li>All Go struct fields will be set to their type&rsquo;s zero value if the corresponding JSON property is missing.</li>
+<li>Pointer types have a zero value of <code>nil</code></li>
+<li>To be able to differentiate between a field which has been set explicitly to it&rsquo;s zero value or omitted, you must use pointer types</li>
+</ul>
+</section><section>
+<h2 id="examples-1">Examples</h2>
+<ul>
+<li><a href="https://goplay.space/#lYdq4Jg19EP">JSON Marshal / Unmarshal</a></li>
+<li><a href="https://goplay.space/#KkPDLf_PvQP">JSON Zero Values</a></li>
+</ul>
+</section><section>
+<h2 id="lab-9---json-puppy">Lab 9 - JSON puppy</h2>
+<ul>
+<li>Create directory <code>09_json/USERNAME</code> containing a copy of upstream master <code>08_project/USERNAME</code></li>
+<li>Add JSON tags to puppy data type</li>
+<li>Test marshalling and unmarshalling using <a href="https://godoc.org/github.com/stretchr/testify/require#JSONEq">require.JSONEq</a></li>
+<li>Add command line flag <code>-d</code> <code>FILE</code> with long form <code>--data</code> <code>FILE</code> using <a href="https://godoc.org/gopkg.in/alecthomas/kingpin.v2">kingpin.v2</a>. FILE should contain an array of puppies in JSON format. Parse this file and store its contents.</li>
+</ul>
+</section><section>
+<h2 id="useful-third-party-packages">Useful third party packages</h2>
+<p><a href="https://godoc.org/github.com/stretchr/testify">testify</a> - testing toolkit
+<a href="https://godoc.org/github.com/go-chi/chi">chi</a> - lightweight router for Go HTTP services
+<a href="https://godoc.org/gopkg.in/alecthomas/kingpin.v2">kingpin.v2</a> - command line and flag parser
+<a href="https://godoc.org/github.com/sirupsen/logrus">logrus</a> - structured logger</p>
+<p><a href="https://godoc.org/github.com/lib/pq">pq</a> - Postgres driver for the database/sql
+<a href="https://godoc.org/github.com/gomodule/redigo/redis">redigo</a> - lightweight client for Redis
+<a href="https://godoc.org/github.com/globalsign/mgo">mgo</a> - MongoDB driver for Go
+<a href="https://godoc.org/gopkg.in/goracle.v2">goracle</a> - Oracle driver for the database/sql</p>
+<p><a href="https://github.com/santhosh-tekuri/jsonschema">jsonschema</a> - JSON schema compilation and validation
+<a href="https://godoc.org/gopkg.in/square/go-jose.v2">go-jose</a> - JWT utils
+&hellip;</p>
+</section><section>
+<h2 id="a-restful-api-starter-13">A RESTful API starter (1/3)</h2>
+<p>Full sample code on Go Play Space -
+not executable to due 3rd party dependency <code>chi</code>:
+<a href="https://goplay.space/#YJqaOpvxiKT">basic sample</a>
+<a href="https://goplay.space/#aXy28QMEiNK">sample with error handling</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="nohighlight" data-noescape><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">TeapotHandler</span> <span style="color:#66d9ef">interface</span> {
+    <span style="color:#a6e22e">handlePost</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>)
+    <span style="color:#a6e22e">handleGet</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>)
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">SetupRoutes</span>(<span style="color:#a6e22e">r</span> <span style="color:#a6e22e">chi</span>.<span style="color:#a6e22e">Router</span>, <span style="color:#a6e22e">h</span> <span style="color:#a6e22e">TeapotHandler</span>) {
+    <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Post</span>(<span style="color:#e6db74">&#34;/api/teapot&#34;</span>, <span style="color:#a6e22e">h</span>.<span style="color:#a6e22e">handlePost</span>)
+    <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Get</span>(<span style="color:#e6db74">&#34;/api/teapot/{id}&#34;</span>, <span style="color:#a6e22e">h</span>.<span style="color:#a6e22e">handleGet</span>)
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">r</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">chi</span>.<span style="color:#a6e22e">NewRouter</span>()
+    <span style="color:#a6e22e">h</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">NewMapTeapotHandler</span>()
+    <span style="color:#a6e22e">SetupRoutes</span>(<span style="color:#a6e22e">r</span>, <span style="color:#a6e22e">h</span>)
+    <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ListenAndServe</span>(<span style="color:#e6db74">&#34;:7735&#34;</span>, <span style="color:#a6e22e">r</span>)
+}
+</code></pre></div></section><section>
+<h2 id="a-restful-api-starter-23">A RESTful API starter (2/3)</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="nohighlight" data-noescape><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Teapot</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">ID</span>          <span style="color:#66d9ef">int</span>
+    <span style="color:#a6e22e">Colour</span>      <span style="color:#66d9ef">string</span>
+    <span style="color:#a6e22e">Temperature</span> <span style="color:#66d9ef">int</span>
+}
+
+<span style="color:#75715e">// MapTeapotHandler implements TeapotHandler
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">MapTeapotHandler</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">store</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">int</span>]<span style="color:#a6e22e">Teapot</span>  <span style="color:#75715e">// Race condition
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">maxID</span> <span style="color:#66d9ef">int</span>
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewMapTeapotHandler</span>() <span style="color:#f92672">*</span><span style="color:#a6e22e">MapTeapotHandler</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">MapTeapotHandler</span>{<span style="color:#a6e22e">store</span>: <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">int</span>]<span style="color:#a6e22e">Teapot</span>{}}
+}
+</code></pre></div></section><section>
+<h2 id="a-restful-api-starter-33">A RESTful API starter (3/3)</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="nohighlight" data-noescape><span style="color:#75715e">// MapTeapotHandler implements  TeapotHandler
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">mt</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">MapTeapotHandler</span>) <span style="color:#a6e22e">handleGet</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
+    <span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">strconv</span>.<span style="color:#a6e22e">Atoi</span>(<span style="color:#a6e22e">chi</span>.<span style="color:#a6e22e">URLParam</span>(<span style="color:#a6e22e">r</span>, <span style="color:#e6db74">&#34;id&#34;</span>))
+    <span style="color:#a6e22e">teapot</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">mt</span>.<span style="color:#a6e22e">store</span>[<span style="color:#a6e22e">id</span>]
+    <span style="color:#a6e22e">render</span>.<span style="color:#a6e22e">JSON</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">r</span>, <span style="color:#a6e22e">teapot</span>)
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">mt</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">MapTeapotHandler</span>) <span style="color:#a6e22e">handlePost</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">teapot</span> <span style="color:#a6e22e">Teapot</span>
+    <span style="color:#a6e22e">render</span>.<span style="color:#a6e22e">DecodeJSON</span>(<span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Body</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">teapot</span>)
+    <span style="color:#a6e22e">mt</span>.<span style="color:#a6e22e">maxID</span><span style="color:#f92672">++</span> <span style="color:#75715e">// Race condition
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">teapot</span>.<span style="color:#a6e22e">ID</span> = <span style="color:#a6e22e">mt</span>.<span style="color:#a6e22e">maxID</span>
+    <span style="color:#a6e22e">mt</span>.<span style="color:#a6e22e">store</span>[<span style="color:#a6e22e">mt</span>.<span style="color:#a6e22e">maxID</span>] = <span style="color:#a6e22e">teapot</span>
+    <span style="color:#a6e22e">render</span>.<span style="color:#a6e22e">JSON</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">r</span>, <span style="color:#a6e22e">teapot</span>)
+}
+</code></pre></div></section><section>
+<h2 id="lab-10---puppy-rest">Lab 10 - Puppy REST</h2>
+<ul>
+<li>
+<p>Create directory <code>10_rest/USERNAME</code> containing a copy of upstream master <code>09_json/USERNAME</code></p>
+</li>
+<li>
+<p>Add file <code>pkg/puppy/rest.go</code> implementing:</p>
+<p>GET    /api/puppy/{id}
+POST   /api/puppy/          Payload: Puppy JSON without ID
+PUT    /api/puppy/{id}      Payload: Puppy JSON without ID
+DELETE /api/puppy/{id}</p>
+</li>
+<li>
+<p>Use <a href="https://golang.org/pkg/net/http/httptest/">net/http/httptest</a> for testing</p>
+</li>
+<li>
+<p>Add flag <code>-p</code> <code>PORT</code> with long flag <code>--port</code> <code>PORT</code> to command line flags</p>
+</li>
+<li>
+<p>Add flag <code>-s</code> <code>STORE</code> with long flag <code>--store</code> <code>STORE</code> with accepted values:</p>
+<p>map, sync, db</p>
+</li>
+<li>
+<p>Document the API in README.md</p>
+</li>
+</ul>
+</section><section>
+<h2 id="lab-11---puppy-notifications">Lab 11 - Puppy Notifications</h2>
+<ul>
+<li>
+<p>Create directory <code>11_notify/USERNAME</code> containing a copy of upstream master <code>10_rest/USERNAME</code></p>
+</li>
+<li>
+<p>Create <code>cmd/lostpuppy-service/main.go</code> running single endpoint:</p>
+<p>POST   /api/lostpuppy/          Payload: { id: PUPPY_ID }</p>
+</li>
+<li>
+<p>This stubbed endpoint returns with 2 second delay:</p>
+<p>HTTP status 201 for even IDs
+HTTP status 500 for odd IDs</p>
+</li>
+<li>
+<p>Update Puppy <code>Delete</code> method to notify lostpuppy-service in a goroutine and log response code asynchronously.</p>
+</li>
+</ul>
+</section><section>
+<h2 id="further-project-work">Further project work</h2>
+<ul>
+<li>[[https://github.com/anz-bank/go-samplerest]]</li>
+<li>[[https://github.com/anz-bank/decimal]]</li>
+</ul>
+</section><section>
+<h2 id="future-of-go">Future of Go</h2>
+<ul>
+<li>Goal to fix the most significant ways Go 1 fails to scale.</li>
+<li>Based on <a href="https://github.com/golang/go/wiki/ExperienceReports">Experience Reports</a> 3 pain points were identified</li>
+<li>Dependency Management (Addressed via Go Modules from version 1.11 onwards)</li>
+<li>Error handling</li>
+<li>Generics</li>
+</ul>
+<p>Rob Pike&rsquo;s Talk <a href="https://blog.golang.org/toward-go2">Towards Go 2</a>
+Dave Cheney Blog <a href="https://dave.cheney.net/paste/the-past-present-and-future-of-go2.pdf">Past Present and Future of Go</a></p>
+</section><section>
+<h2 id="further-reading">Further Reading</h2>
+<ul>
+<li><a href="https://blog.golang.org/using-go-modules">Package management with go modules</a></li>
+<li><a href="https://appliedgo.net/plugins/">Writing plugins in go</a></li>
+<li><a href="https://blog.golang.org/cover">Code coverage with go test</a></li>
+<li><a href="https://dave.cheney.net/2013/06/30/how-to-write-benchmarks-in-go">Benchmarking your code</a></li>
+<li><a href="https://golang.org/pkg/runtime/pprof/">CPU/Memory Profiling</a></li>
+</ul>
+</section><section>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://golang.org/doc/faq">https://golang.org/doc/faq</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Go_(programming_language)">Wikipedia</a></li>
+<li><a href="https://talks.golang.org/2015/gophercon-goevolution.slide">The Evolution of Go</a></li>
+<li><a href="https://talks.golang.org/2012/zen.slide">https://talks.golang.org/2012/zen.slide</a></li>
+<li><a href="https://www.youtube.com/watch?v=ytEkHepK08c">Talk: A Tour of Go</a></li>
+</ul>
+</section><section>
+<h2 id="feedback">Feedback</h2>
+</section>
+
+  
+
+
+</div>
+      
+
+    </div>
+<script type="text/javascript" src=/talks-go/reveal-hugo/object-assign.js></script>
+
+<a href="/talks-go/reveal-js/css/print/" id="print-location" style="display: none;"></a>
+<script type="text/javascript">
+  var printLocationElement = document.getElementById('print-location');
+  var link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.type = 'text/css';
+  link.href = printLocationElement.href + (window.location.search.match(/print-pdf/gi) ? 'pdf.css' : 'paper.css');
+  document.getElementsByTagName('head')[0].appendChild(link);
+</script>
+
+<script type="application/json" id="reveal-hugo-site-params">null</script>
+<script type="application/json" id="reveal-hugo-page-params">null</script>
+
+<script src="/talks-go/reveal-js/js/reveal.js"></script>
+
+<script type="text/javascript">
+  
+  
+  function camelize(map) {
+    if (map) {
+      Object.keys(map).forEach(function(k) {
+        newK = k.replace(/(\_\w)/g, function(m) { return m[1].toUpperCase() });
+        if (newK != k) {
+          map[newK] = map[k];
+          delete map[k];
+        }
+      });
+    }
+    return map;
+  }
+  
+  var revealHugoDefaults = { center: true, controls: true, history: true, progress: true, transition: "slide" };
+  var revealHugoSiteParams = JSON.parse(document.getElementById('reveal-hugo-site-params').innerHTML);
+  var revealHugoPageParams = JSON.parse(document.getElementById('reveal-hugo-page-params').innerHTML);
+  
+  var options = Object.assign({},
+    camelize(revealHugoDefaults),
+    camelize(revealHugoSiteParams),
+    camelize(revealHugoPageParams));
+  Reveal.initialize(options);
+</script>
+
+
+  
+  
+  <script type="text/javascript" src="/talks-go/reveal-js/plugin/markdown/marked.js"></script>
+  
+  <script type="text/javascript" src="/talks-go/reveal-js/plugin/markdown/markdown.js"></script>
+  
+  <script type="text/javascript" src="/talks-go/reveal-js/plugin/highlight/highlight.js"></script>
+  
+  <script type="text/javascript" src="/talks-go/reveal-js/plugin/zoom-js/zoom.js"></script>
+  
+  
+  <script type="text/javascript" src="/talks-go/reveal-js/plugin/notes/notes.js"></script>
+
+
+
+    
+    
+  </body>
+</html>
